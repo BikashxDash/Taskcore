@@ -12,40 +12,50 @@
    Design Tokens & CSS Variables
    -------------------------------------------------------------------------- */
 :root {
-  /* Dark Palette (Default - Dusty Rose, Soft Blush, Vanilla Cream & Meadow Moss) */
-  --bg-app: #181213;
-  --bg-surface: #241a1c;
-  --bg-elevated: #302325;
-  --bg-hover: #3d2d30;
-  --bg-active: #4a373b;
+  /* Light theme (default) */
+  --bg: #F0FDF4;
+  --card: #FFFFFF;
+  --primary: #16A34A;
+  --primary-hover: #15803D;
+  --text: #14532D;
+  --text-done: #86A893;
+  --border: #BBF7D0;
+  --accent: #FACC15;
+  --on-primary: #FFFFFF;
 
-  --border-subtle: #302325;
-  --border-default: #4f3b3e;
-  --border-strong: #8ea66b;
+  /* Priority colors (both themes) */
+  --prio-high: #EF4444;
+  --prio-medium: #F59E0B;
+  --prio-low: #22C55E;
+  --prio-urgent: #EF4444;
 
-  --text-primary: #fff9d6;
-  --text-secondary: #ffdcdc;
-  --text-muted: #a69496;
-  --text-inverse: #181213;
+  /* Application aliases mapped directly to tokens */
+  --bg-app: var(--bg);
+  --bg-surface: var(--card);
+  --bg-elevated: #E7F9EE;
+  --bg-hover: #DCFCE7;
+  --bg-active: #BBF7D0;
 
-  /* Solid Functional Accents */
-  --color-primary: #d8a2a2;
-  --color-primary-hover: #c58f8f;
-  --color-primary-subtle: #d8a2a233;
-  --color-success: #8ea66b;
-  --color-success-subtle: #8ea66b33;
-  --color-warning: #d97706;
-  --color-warning-subtle: #78350f33;
-  --color-danger: #b91c1c;
-  --color-danger-subtle: #7f1d1d33;
-  --color-info: #8ea66b;
-  --color-info-subtle: #8ea66b33;
+  --border-subtle: var(--border);
+  --border-default: var(--border);
+  --border-strong: var(--primary);
 
-  /* Priority Palette */
-  --prio-urgent: #ef4444;
-  --prio-high: #f97316;
-  --prio-medium: #d8a2a2;
-  --prio-low: #8ea66b;
+  --text-primary: var(--text);
+  --text-secondary: var(--text-done);
+  --text-muted: var(--text-done);
+  --text-inverse: var(--on-primary);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-subtle: rgba(22, 163, 74, 0.14);
+  --color-success: var(--primary);
+  --color-success-subtle: rgba(22, 163, 74, 0.14);
+  --color-warning: var(--accent);
+  --color-warning-subtle: rgba(250, 204, 21, 0.2);
+  --color-danger: #EF4444;
+  --color-danger-subtle: rgba(239, 68, 68, 0.12);
+  --color-info: var(--primary);
+  --color-info-subtle: rgba(22, 163, 74, 0.14);
 
   /* Geometry & Radii */
   --radius-xs: 3px;
@@ -60,10 +70,10 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Elevation Shadows */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.22);
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.28);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.36);
-  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.48);
+  --shadow-xs: 0 1px 2px rgba(20, 83, 45, 0.05);
+  --shadow-sm: 0 2px 4px rgba(20, 83, 45, 0.08);
+  --shadow-md: 0 4px 12px rgba(20, 83, 45, 0.1);
+  --shadow-lg: 0 10px 24px rgba(20, 83, 45, 0.15);
 
   /* Layout */
   --sidebar-width: 270px;
@@ -71,113 +81,136 @@
   --bottom-nav-height: 60px;
 }
 
+/* Dark theme (via @media (prefers-color-scheme: dark)) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1A12;
+    --card: #14271C;
+    --primary: #4ADE80;
+    --primary-hover: #22C55E;
+    --text: #DCFCE7;
+    --text-done: #6B8F79;
+    --border: #1F3A2A;
+    --accent: #FACC15;
+    --on-primary: #052E16;
+
+    --bg-app: var(--bg);
+    --bg-surface: var(--card);
+    --bg-elevated: #1a3325;
+    --bg-hover: #1f3d2d;
+    --bg-active: #284e3a;
+
+    --border-subtle: var(--border);
+    --border-default: var(--border);
+    --border-strong: var(--primary);
+
+    --text-primary: var(--text);
+    --text-secondary: var(--text-done);
+    --text-muted: var(--text-done);
+    --text-inverse: var(--on-primary);
+
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-subtle: rgba(74, 222, 128, 0.16);
+    --color-success: var(--primary);
+    --color-success-subtle: rgba(74, 222, 128, 0.16);
+    --color-warning: var(--accent);
+    --color-warning-subtle: rgba(250, 204, 21, 0.2);
+    --color-danger: #EF4444;
+    --color-danger-subtle: rgba(239, 68, 68, 0.16);
+    --color-info: var(--primary);
+    --color-info-subtle: rgba(74, 222, 128, 0.16);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Explicit Dark Theme [data-theme="dark"] */
+[data-theme="dark"] {
+  --bg: #0B1A12;
+  --card: #14271C;
+  --primary: #4ADE80;
+  --primary-hover: #22C55E;
+  --text: #DCFCE7;
+  --text-done: #6B8F79;
+  --border: #1F3A2A;
+  --accent: #FACC15;
+  --on-primary: #052E16;
+
+  --bg-app: var(--bg);
+  --bg-surface: var(--card);
+  --bg-elevated: #1a3325;
+  --bg-hover: #1f3d2d;
+  --bg-active: #284e3a;
+
+  --border-subtle: var(--border);
+  --border-default: var(--border);
+  --border-strong: var(--primary);
+
+  --text-primary: var(--text);
+  --text-secondary: var(--text-done);
+  --text-muted: var(--text-done);
+  --text-inverse: var(--on-primary);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-subtle: rgba(74, 222, 128, 0.16);
+  --color-success: var(--primary);
+  --color-success-subtle: rgba(74, 222, 128, 0.16);
+  --color-warning: var(--accent);
+  --color-warning-subtle: rgba(250, 204, 21, 0.2);
+  --color-danger: #EF4444;
+  --color-danger-subtle: rgba(239, 68, 68, 0.16);
+  --color-info: var(--primary);
+  --color-info-subtle: rgba(74, 222, 128, 0.16);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* Explicit Light Theme [data-theme="light"] */
 [data-theme="light"] {
-  --bg-app: #fff9d6;
-  --bg-surface: #ffffff;
-  --bg-elevated: #ffdcdc;
-  --bg-hover: #f7cece;
-  --bg-active: #ecc0c0;
+  --bg: #F0FDF4;
+  --card: #FFFFFF;
+  --primary: #16A34A;
+  --primary-hover: #15803D;
+  --text: #14532D;
+  --text-done: #86A893;
+  --border: #BBF7D0;
+  --accent: #FACC15;
+  --on-primary: #FFFFFF;
 
-  --border-subtle: #f0e6be;
-  --border-default: #d8a2a2;
-  --border-strong: #8ea66b;
+  --bg-app: var(--bg);
+  --bg-surface: var(--card);
+  --bg-elevated: #E7F9EE;
+  --bg-hover: #DCFCE7;
+  --bg-active: #BBF7D0;
 
-  --text-primary: #281b1c;
-  --text-secondary: #5a4548;
-  --text-muted: #7d6568;
-  --text-inverse: #fff9d6;
+  --border-subtle: var(--border);
+  --border-default: var(--border);
+  --border-strong: var(--primary);
 
-  --color-primary: #d8a2a2;
-  --color-primary-hover: #be8686;
-  --color-primary-subtle: #d8a2a233;
-  --color-success: #8ea66b;
-  --color-success-subtle: #8ea66b33;
-  --color-warning: #b45309;
-  --color-warning-subtle: #fef3c7;
-  --color-danger: #b91c1c;
-  --color-danger-subtle: #fee2e2;
-  --color-info: #8ea66b;
-  --color-info-subtle: #8ea66b33;
+  --text-primary: var(--text);
+  --text-secondary: var(--text-done);
+  --text-muted: var(--text-done);
+  --text-inverse: var(--on-primary);
 
-  --shadow-xs: 0 1px 2px rgba(40, 27, 28, 0.05);
-  --shadow-sm: 0 2px 4px rgba(40, 27, 28, 0.08);
-  --shadow-md: 0 4px 12px rgba(40, 27, 28, 0.12);
-  --shadow-lg: 0 10px 24px rgba(40, 27, 28, 0.18);
-}
-
-/* --------------------------------------------------------------------------
-   Global Application Accent Color Themes (data-accent)
-   -------------------------------------------------------------------------- */
-[data-accent="rose"],
-:root {
-  --color-primary: #d8a2a2;
-  --color-primary-hover: #c58f8f;
-  --color-primary-subtle: rgba(216, 162, 162, 0.22);
-  --border-strong: #d8a2a2;
-}
-
-[data-accent="blush"] {
-  --color-primary: #ffdcdc;
-  --color-primary-hover: #eec5c5;
-  --color-primary-subtle: rgba(255, 220, 220, 0.22);
-  --border-strong: #ffdcdc;
-}
-[data-theme="dark"][data-accent="blush"] .btn-primary {
-  color: #181213;
-}
-[data-theme="light"][data-accent="blush"] {
-  --color-primary: #df9898;
-  --color-primary-hover: #cc8484;
-  --color-primary-subtle: rgba(223, 152, 152, 0.25);
-  --border-strong: #df9898;
-}
-
-[data-accent="vanilla"] {
-  --color-primary: #fff9d6;
-  --color-primary-hover: #ede5bd;
-  --color-primary-subtle: rgba(255, 249, 214, 0.22);
-  --border-strong: #fff9d6;
-}
-[data-theme="dark"][data-accent="vanilla"] .btn-primary {
-  color: #181213;
-}
-[data-theme="light"][data-accent="vanilla"] {
-  --color-primary: #cca038;
-  --color-primary-hover: #b58c2b;
-  --color-primary-subtle: rgba(204, 160, 56, 0.25);
-  --border-strong: #cca038;
-}
-
-[data-accent="moss"] {
-  --color-primary: #8ea66b;
-  --color-primary-hover: #7b945a;
-  --color-primary-subtle: rgba(142, 166, 107, 0.25);
-  --border-strong: #8ea66b;
-}
-[data-theme="light"][data-accent="moss"] {
-  --color-primary: #6b8449;
-  --color-primary-hover: #59703b;
-  --color-primary-subtle: rgba(107, 132, 73, 0.25);
-  --border-strong: #6b8449;
-}
-
-[data-accent="charcoal"] {
-  --color-primary: #4f3b3e;
-  --color-primary-hover: #61494d;
-  --color-primary-subtle: rgba(79, 59, 62, 0.35);
-  --border-strong: #785b60;
-}
-[data-theme="dark"][data-accent="charcoal"] .btn-primary {
-  color: #fff9d6;
-}
-[data-theme="light"][data-accent="charcoal"] {
-  --color-primary: #281b1c;
-  --color-primary-hover: #3d2b2c;
-  --color-primary-subtle: rgba(40, 27, 28, 0.2);
-  --border-strong: #281b1c;
-}
-[data-theme="light"][data-accent="charcoal"] .btn-primary {
-  color: #fff9d6;
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-subtle: rgba(22, 163, 74, 0.14);
+  --color-success: var(--primary);
+  --color-success-subtle: rgba(22, 163, 74, 0.14);
+  --color-warning: var(--accent);
+  --color-warning-subtle: rgba(250, 204, 21, 0.2);
+  --color-danger: #EF4444;
+  --color-danger-subtle: rgba(239, 68, 68, 0.12);
+  --color-info: var(--primary);
+  --color-info-subtle: rgba(22, 163, 74, 0.14);
 }
 
 /* --------------------------------------------------------------------------
@@ -1095,7 +1128,7 @@ a:hover {
 
 .task-card.is-completed .task-title-text {
   text-decoration: line-through;
-  color: var(--text-muted);
+  color: var(--text-done);
 }
 
 .task-checkbox-btn {
@@ -1368,7 +1401,7 @@ a:hover {
 
 .subtask-item.is-done .subtask-text {
   text-decoration: line-through;
-  color: var(--text-muted);
+  color: var(--text-done);
 }
 
 .subtask-text {
@@ -1463,14 +1496,7 @@ a:hover {
    Toast Notifications
    -------------------------------------------------------------------------- */
 .toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 120;
-  pointer-events: none;
+  display: none !important;
 }
 
 .toast {
@@ -1577,7 +1603,12 @@ a:hover {
   }
 
   #headerLogoutBtn {
-    display: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    height: 34px;
+    font-size: 12px;
   }
 
   .mobile-app-branding {

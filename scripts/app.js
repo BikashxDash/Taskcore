@@ -39,6 +39,7 @@ const elements = {
   sidebarUserHandle: document.getElementById('sidebarUserHandle'),
   sidebarLogoutBtn: document.getElementById('sidebarLogoutBtn'),
   headerLogoutBtn: document.getElementById('headerLogoutBtn'),
+  profileLogoutBtn: document.getElementById('profileLogoutBtn'),
 
   // Navigation & Views
   sidebar: document.getElementById('sidebar'),
@@ -454,31 +455,8 @@ function toggleCalendarMaximize() {
  * Toast Notification Dispatcher
  */
 function showToast(message, actionText = null, actionCallback = null) {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-
-  const textSpan = document.createElement('span');
-  textSpan.textContent = message;
-  toast.appendChild(textSpan);
-
-  if (actionText && actionCallback) {
-    const actionBtn = document.createElement('button');
-    actionBtn.className = 'btn btn-sm btn-secondary';
-    actionBtn.textContent = actionText;
-    actionBtn.addEventListener('click', () => {
-      actionCallback();
-      toast.remove();
-    });
-    toast.appendChild(actionBtn);
-  }
-
-  elements.toastContainer.appendChild(toast);
-
-  setTimeout(() => {
-    if (toast.parentNode) {
-      toast.remove();
-    }
-  }, 4500);
+  // Disabled bottom-right notification messages per user request
+  return;
 }
 
 /**
@@ -1666,7 +1644,7 @@ function showAuthError(message) {
  * Apply Theme (Dark or Light) and synchronize UI controls and storage
  */
 function applyTheme(theme) {
-  const activeTheme = theme === 'light' ? 'light' : 'dark';
+  const activeTheme = theme === 'dark' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', activeTheme);
   try {
     localStorage.setItem('task_core_theme', activeTheme);
@@ -1689,7 +1667,7 @@ function checkAuthState() {
     const user = auth.getCurrentUser();
     store.setUser(user.userId);
     const userSettings = store.getSettings();
-    const activeTheme = userSettings.theme || localStorage.getItem('task_core_theme') || 'dark';
+    const activeTheme = userSettings.theme || localStorage.getItem('task_core_theme') || 'light';
     applyTheme(activeTheme);
     if (elements.authScreen) elements.authScreen.style.display = 'none';
     if (elements.appContainer) elements.appContainer.style.display = 'flex';
@@ -1703,7 +1681,7 @@ function checkAuthState() {
     renderCalendar();
   } else {
     store.setUser(null);
-    const savedTheme = localStorage.getItem('task_core_theme') || 'dark';
+    const savedTheme = localStorage.getItem('task_core_theme') || 'light';
     applyTheme(savedTheme);
     if (elements.authScreen) elements.authScreen.style.display = 'flex';
     if (elements.appContainer) elements.appContainer.style.display = 'none';
@@ -1831,6 +1809,7 @@ function setupEvents() {
 
   elements.sidebarLogoutBtn?.addEventListener('click', handleLogout);
   elements.headerLogoutBtn?.addEventListener('click', handleLogout);
+  elements.profileLogoutBtn?.addEventListener('click', handleLogout);
 
   // Mobile Menu Toggles
   elements.mobileMenuBtn?.addEventListener('click', () => {
@@ -1843,7 +1822,7 @@ function setupEvents() {
 
   // Theme Toggle
   elements.themeToggleBtn?.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
     const next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     store.updateSettings({ theme: next });
@@ -2346,7 +2325,7 @@ function setupEvents() {
 
 // Initial Boot
 function init() {
-  const savedTheme = localStorage.getItem('task_core_theme') || store.getSettings().theme || 'dark';
+  const savedTheme = localStorage.getItem('task_core_theme') || store.getSettings().theme || 'light';
   applyTheme(savedTheme);
 
   // Populate dynamic icons in initial HTML placeholders

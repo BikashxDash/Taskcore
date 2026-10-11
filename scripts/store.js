@@ -228,7 +228,7 @@ const DEFAULT_TASKS = [
 ];
 
 const DEFAULT_SETTINGS = {
-  theme: 'dark',
+  theme: 'light',
   activeView: 'all', // all | today | upcoming | overdue | completed
   activeCategory: 'all',
   activePriority: 'all',

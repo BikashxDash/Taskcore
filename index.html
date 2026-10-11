@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css?v=12">
+  <link rel="stylesheet" href="styles/main.css?v=13">
   <script>
     (function() {
       try {
@@ -31,10 +31,10 @@
             }
           }
         }
-        if (theme === 'light') {
-          document.documentElement.setAttribute('data-theme', 'light');
-        } else {
+        if (theme === 'dark') {
           document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
         }
         document.documentElement.setAttribute('data-accent', accent || 'rose');
       } catch (e) {}
@@ -560,9 +560,15 @@
                 <p class="profile-subline" id="profileUserHandleEmail">@username</p>
               </div>
             </div>
-            <button type="button" class="btn btn-secondary btn-sm btn-icon-only profile-pencil-btn" id="btnEditProfile" title="Edit Profile Details" aria-label="Edit Profile Details">
-              <span data-icon="edit"></span>
-            </button>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button type="button" class="btn btn-secondary btn-sm btn-icon-only profile-pencil-btn" id="btnEditProfile" title="Edit Profile Details" aria-label="Edit Profile Details">
+                <span data-icon="edit"></span>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" id="profileLogoutBtn" title="Sign Out" aria-label="Sign Out">
+                <span data-icon="logOut"></span>
+                <span>Sign Out</span>
+              </button>
+            </div>
           </div>
 
           <!-- Expandable Account Modification Form (Toggled by Pencil Icon) -->
@@ -1262,6 +1268,6 @@
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
   <!-- Application Script Module -->
-  <script type="module" src="scripts/app.js?v=10"></script>
+  <script type="module" src="scripts/app.js?v=11"></script>
 </body>
 </html>
