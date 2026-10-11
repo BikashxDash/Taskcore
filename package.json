@@ -1,0 +1,16 @@
+{
+  "name": "taskcore-todo-app",
+  "version": "1.0.0",
+  "description": "Fast, distraction-free task management application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "todo",
+    "productivity",
+    "taskcore"
+  ],
+  "author": "",
+  "license": "ISC"
+}

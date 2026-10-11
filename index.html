@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskCore - Fast, Distraction-Free Task Manager</title>
+  <meta name="description" content="A fast, private, distraction-free task management tool for desktop and mobile web browsers. Zero tracking, 100% local data storage.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css?v=12">
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('task_core_theme');
+        var accent = localStorage.getItem('task_core_accent');
+        if (!theme || !accent) {
+          var userRaw = localStorage.getItem('task_core_auth_current_user');
+          if (userRaw) {
+            var user = JSON.parse(userRaw);
+            if (user && user.userId) {
+              var settingsRaw = localStorage.getItem('task_core_v1_settings_' + user.userId);
+              if (settingsRaw) {
+                var settings = JSON.parse(settingsRaw);
+                if (settings && settings.theme && !theme) theme = settings.theme;
+                if (settings && (settings.appColor || settings.taskbarColor) && !accent) {
+                  accent = settings.appColor || settings.taskbarColor;
+                }
+               }
+            }
+          }
+        }
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        document.documentElement.setAttribute('data-accent', accent || 'rose');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- Mandatory Authentication Screen -->
+  <section class="auth-screen" id="authScreen" aria-label="Account Authentication">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-icon" aria-label="TaskCore">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+
+      <!-- Error Alert Message -->
+      <div class="auth-error-alert" id="authErrorAlert" role="alert">
+        <span data-icon="alertCircle"></span>
+        <span id="authErrorText">Invalid credentials provided.</span>
+      </div>
+
+      <!-- Sign In Form -->
+      <form class="auth-form" id="signInForm">
+        <div class="auth-form-field">
+          <label class="form-label" for="loginIdentifier">Email or Username</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="user"></span>
+            <input type="text" class="auth-input" id="loginIdentifier" placeholder="name@example.com or username" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="auth-form-field">
+          <label class="form-label" for="loginPassword">Password</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="lock"></span>
+            <input type="password" class="auth-input has-toggle" id="loginPassword" placeholder="Enter password" required autocomplete="current-password">
+            <button type="button" class="auth-password-toggle-btn" data-toggle-target="loginPassword" aria-label="Toggle password visibility" title="Show or hide password">
+              <span class="password-toggle-icon" data-icon="eye"></span>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="height: 42px; margin-top: 4px;">
+          <span>Sign In to Tasks</span>
+        </button>
+
+        <div class="auth-switch-prompt">
+          <span>Don't have an account?</span>
+          <button type="button" class="auth-switch-link" id="switchToRegisterBtn">Create account</button>
+        </div>
+      </form>
+
+      <!-- Registration Form -->
+      <form class="auth-form" id="registerForm" style="display: none;">
+        <div class="auth-form-field">
+          <label class="form-label" for="registerName">Full Name</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="user"></span>
+            <input type="text" class="auth-input" id="registerName" placeholder="e.g. Alex Morgan" required autocomplete="name">
+          </div>
+        </div>
+
+        <div class="auth-form-field">
+          <label class="form-label" for="registerEmail">Email Address</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="mail"></span>
+            <input type="email" class="auth-input" id="registerEmail" placeholder="name@example.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="auth-form-field">
+          <label class="form-label" for="registerUsername">Username</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="user"></span>
+            <input type="text" class="auth-input" id="registerUsername" placeholder="choose username" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="auth-form-field">
+          <label class="form-label" for="registerPassword">Password (6+ chars)</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="lock"></span>
+            <input type="password" class="auth-input has-toggle" id="registerPassword" placeholder="Create secure password" required minlength="6" autocomplete="new-password">
+            <button type="button" class="auth-password-toggle-btn" data-toggle-target="registerPassword" aria-label="Toggle password visibility" title="Show or hide password">
+              <span class="password-toggle-icon" data-icon="eye"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-form-field">
+          <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+          <div class="auth-input-wrap">
+            <span class="auth-input-icon" data-icon="lock"></span>
+            <input type="password" class="auth-input has-toggle" id="registerConfirmPassword" placeholder="Confirm password" required minlength="6" autocomplete="new-password">
+            <button type="button" class="auth-password-toggle-btn" data-toggle-target="registerConfirmPassword" aria-label="Toggle password visibility" title="Show or hide password">
+              <span class="password-toggle-icon" data-icon="eye"></span>
+            </button>
+          </div>
+        </div>
+
+        <label class="auth-checkbox-row">
+          <input type="checkbox" id="registerTermsCheck" required>
+          <span>I agree to the Terms of Service and Privacy Policy</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary" style="height: 42px; margin-top: 4px;">
+          <span>Create Account</span>
+        </button>
+
+        <div class="auth-switch-prompt">
+          <span>Already have an account?</span>
+          <button type="button" class="auth-switch-link" id="switchToSignInBtn">Sign in</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main Application Container -->
+  <div class="app-container" id="appContainer" style="display: none;">
+
+    <!-- Left Sidebar (Desktop & Mobile Drawer) -->
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar Navigation">
+      <div class="sidebar-header">
+        <div class="brand-wrap">
+          <div class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span class="brand-title">TaskCore</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="sidebarCloseBtn" aria-label="Close menu">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- Views Navigation -->
+        <div>
+          <div class="nav-group-title">Views</div>
+          <ul class="nav-list">
+            <li>
+              <button type="button" class="nav-item-btn active" data-view="all">
+                <span class="nav-item-left">
+                  <span data-icon="tasks"></span>
+                  <span>All Tasks</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" data-view="habits" id="sidebarNavHabits">
+                <span class="nav-item-left">
+                  <span data-icon="repeat"></span>
+                  <span>Habits</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" data-view="projects" id="sidebarNavProjects">
+                <span class="nav-item-left">
+                  <span data-icon="briefcase"></span>
+                  <span>Projects</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" data-view="today">
+                <span class="nav-item-left">
+                  <span data-icon="calendar"></span>
+                  <span>Today</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" data-view="upcoming">
+                <span class="nav-item-left">
+                  <span data-icon="clock"></span>
+                  <span>Upcoming</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" data-view="overdue">
+                <span class="nav-item-left">
+                  <span data-icon="alertCircle"></span>
+                  <span>Overdue</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" data-view="completed">
+                <span class="nav-item-left">
+                  <span data-icon="check"></span>
+                  <span>Completed</span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Categories Section -->
+        <div>
+          <div class="nav-group-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Categories</span>
+            <button type="button" class="btn btn-ghost btn-sm" id="addCategoryBtn" style="padding: 2px 6px; font-size: 11px;">
+              <span data-icon="plus"></span> New
+            </button>
+          </div>
+          <ul class="nav-list" id="categoryList">
+            <!-- Populated dynamically -->
+          </ul>
+        </div>
+
+        <!-- Data Management -->
+        <div>
+          <div class="nav-group-title">Data Storage</div>
+          <ul class="nav-list">
+            <li>
+              <button type="button" class="nav-item-btn" id="exportBtn">
+                <span class="nav-item-left">
+                  <span data-icon="download"></span>
+                  <span>Export JSON</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="nav-item-btn" id="importBtn">
+                <span class="nav-item-left">
+                  <span data-icon="upload"></span>
+                  <span>Import JSON</span>
+                </span>
+              </button>
+              <input type="file" id="importFileInput" accept=".json" style="display: none;">
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge" id="sidebarUserProfile">
+          <div class="user-profile-info" data-view-target="profile" style="cursor: pointer;" title="Open Profile & Settings">
+            <div class="user-avatar-box">
+              <span data-icon="user"></span>
+            </div>
+            <div class="user-meta-col">
+              <span class="user-name-text" id="sidebarUserName">User Account</span>
+              <span class="user-handle-text" id="sidebarUserHandle">@username</span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="sidebarLogoutBtn" title="Sign Out" aria-label="Sign Out">
+            <span data-icon="logOut"></span>
+          </button>
+        </div>
+
+        <div class="legal-links-row">
+          <button type="button" class="btn-ghost" data-view-target="privacy">Privacy Policy</button>
+          <span>|</span>
+          <button type="button" class="btn-ghost" data-view-target="terms">Terms of Service</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-area">
+
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="mobile-app-branding">
+            <span class="mobile-app-logo" data-icon="checkSquare"></span>
+            <span class="mobile-app-title">TaskCore</span>
+          </div>
+          <button type="button" class="btn btn-ghost btn-icon-only mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+            <span data-icon="menu"></span>
+          </button>
+          <div class="search-bar-wrap">
+            <span class="search-icon-slot" data-icon="search"></span>
+            <input type="search" class="search-input" id="searchInput" placeholder="Search tasks or press / to filter..." autocomplete="off">
+            <button type="button" class="btn btn-ghost btn-icon-only search-clear-btn" id="searchClearBtn" aria-label="Clear search">
+              <span data-icon="close"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button type="button" class="btn btn-ghost btn-sm" id="headerLogoutBtn" title="Sign Out" aria-label="Sign Out">
+            <span data-icon="logOut"></span>
+            <span style="font-size: 12.5px;">Sign Out</span>
+          </button>
+          <button type="button" class="btn btn-ghost btn-icon-only" id="themeToggleBtn" aria-label="Toggle theme">
+            <span data-icon="sun"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Task Workspace View -->
+      <div id="tasksWorkspace" class="workspace-content">
+        <div class="workspace-card">
+
+          <!-- Horizontal Scrollable Calendar with Maximize Option -->
+          <section class="task-calendar-section" id="taskCalendarSection" aria-label="Task Agenda Calendar">
+            <div class="calendar-header-bar">
+              <div class="calendar-title-group">
+                <span class="calendar-icon-wrap" data-icon="calendar"></span>
+                <span class="calendar-month-label" id="calendarMonthLabel">October 2026</span>
+                <span class="calendar-selected-badge" id="calendarSelectedBadge">Today</span>
+              </div>
+              <div class="calendar-controls-group">
+                <button type="button" class="btn btn-ghost btn-sm btn-icon-only calendar-toggle-btn" id="calendarMaximizeBtn" title="Toggle Full Month View" aria-label="Toggle Calendar View">
+                  <span id="calendarMaximizeIcon" data-icon="maximize"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Row Format: Horizontally Scrollable Days Strip -->
+            <div class="calendar-strip-container" id="calendarStripContainer">
+              <div class="calendar-strip-track" id="calendarStripTrack" role="tablist" aria-label="Days of the Month">
+                <!-- Day cards rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Maximized Monthly Calendar View -->
+            <div class="calendar-maximized-view" id="calendarMaximizedView" style="display: none;">
+              <div class="calendar-grid-weekdays">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+              <div class="calendar-grid-cells" id="calendarGridCells">
+                <!-- Monthly grid cells rendered dynamically -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Real Task Metrics Strip: Single Row with Symbols and Numbers Only -->
+          <section class="metrics-row-bar" aria-label="Task Status Indicators">
+            <div class="metric-item metric-item-active" title="Active Tasks">
+              <span class="metric-symbol" data-icon="tasks"></span>
+              <span class="metric-value" id="metricActive">0</span>
+            </div>
+            <div class="metric-item metric-item-completed" title="Completed">
+              <span class="metric-symbol" data-icon="check"></span>
+              <span class="metric-value" id="metricCompleted">0</span>
+            </div>
+            <div class="metric-item metric-item-today" title="Due Today">
+              <span class="metric-symbol" data-icon="clock"></span>
+              <span class="metric-value" id="metricToday">0</span>
+            </div>
+            <div class="metric-item metric-item-overdue" title="Overdue">
+              <span class="metric-symbol" data-icon="alertCircle"></span>
+              <span class="metric-value" id="metricOverdue">0</span>
+            </div>
+          </section>
+
+          <!-- Workspace Toolbar -->
+          <div class="toolbar-strip">
+            <div class="toolbar-title-wrap">
+              <h1 class="current-view-title" id="currentViewTitle">All Tasks</h1>
+            </div>
+            <div class="toolbar-controls">
+              <select class="form-select" id="sortSelect" style="width: auto; height: 32px; font-size: 12.5px;">
+                <option value="dueDate">Sort by Due Date</option>
+                <option value="priority">Sort by Priority</option>
+                <option value="title">Sort by Title</option>
+                <option value="created">Sort by Created</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" id="btnOpenNewTaskModal">
+                <span data-icon="plus"></span> Add Task
+              </button>
+            </div>
+          </div>
+
+          <!-- Task List Feed -->
+          <section class="task-list" id="taskListContainer" aria-label="Task items">
+            <!-- Populated dynamically -->
+          </section>
+
+          <!-- Empty State Message -->
+          <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon" data-icon="inbox"></div>
+            <h2 class="empty-title">No tasks found</h2>
+            <p class="empty-desc">Your agenda is clear for this view. Create a new task or switch to a different category filter.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Privacy Policy Page -->
+      <section id="privacyView" class="legal-page-container">
+        <article class="legal-article">
+          <div class="legal-header">
+            <div class="legal-header-top">
+              <h1 class="legal-title">Privacy Policy</h1>
+              <button type="button" class="btn btn-secondary btn-sm back-to-tasks-btn">Return to Tasks</button>
+            </div>
+            <p class="legal-date">Effective Date: October 8, 2026</p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">1. Zero Server Telemetry</h2>
+            <p class="legal-text">
+              TaskCore is engineered with a strict privacy-first architecture. We do not operate remote tracking servers, third-party user telemetry, fingerprinting scripts, or analytic beacons. Your usage patterns and task details are never transmitted over the internet to our systems or third-party advertising brokers.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">2. Client-Side Data Storage</h2>
+            <p class="legal-text">
+              All tasks, subtasks, categories, and user preferences are saved locally inside your web browser using HTML5 LocalStorage. The data resides exclusively on your device storage:
+            </p>
+            <ul class="legal-list">
+              <li>No account registration or password is required.</li>
+              <li>Clearing browser storage or site cache will reset stored data.</li>
+              <li>You can export a full JSON backup of all tasks at any time using the Export JSON feature in the sidebar.</li>
+            </ul>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">3. Cookies and Trackers</h2>
+            <p class="legal-text">
+              TaskCore does not deploy advertising cookies, behavioral tracking pixels, or cross-site tracking mechanisms. The application operates entirely offline after the initial page load.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">4. Data Deletion and Portability</h2>
+            <p class="legal-text">
+              You retain complete ownership and sovereignty over your records. You can delete individual tasks, clear completed items, or import/export backup snapshots directly through the interface without needing external permissions.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">5. Policy Updates</h2>
+            <p class="legal-text">
+              Any amendments to this policy will be documented directly within this application view with an updated effective date.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Terms and Conditions Page -->
+      <section id="termsView" class="legal-page-container">
+        <article class="legal-article">
+          <div class="legal-header">
+            <div class="legal-header-top">
+              <h1 class="legal-title">Terms and Conditions</h1>
+              <button type="button" class="btn btn-secondary btn-sm back-to-tasks-btn">Return to Tasks</button>
+            </div>
+            <p class="legal-date">Effective Date: October 8, 2026</p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">1. Acceptance of Terms</h2>
+            <p class="legal-text">
+              By accessing or using the TaskCore web application, you acknowledge and agree to comply with these Terms and Conditions. If you do not accept these terms, please discontinue use of the application.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">2. Local Storage Responsibility</h2>
+            <p class="legal-text">
+              Because TaskCore operates client-side without a cloud synchronization database, data persistence is tied to your local browser environment. Users are solely responsible for creating regular JSON file backups of essential information using the provided export facility. We cannot recover data lost through hardware failure, manual cache clearing, or browser resets.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">3. Permitted Use</h2>
+            <p class="legal-text">
+              TaskCore is provided for personal, professional, and educational task organization. You agree not to attempt to reverse engineer, inject malicious scripts, or misuse the software in violation of local laws.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">4. Disclaimer of Warranty</h2>
+            <p class="legal-text">
+              The software is provided on an as-is and as-available basis without warranties of any kind, whether express or implied, including fitness for a particular purpose or non-infringement. We do not warrant that operation will be completely error-free or uninterrupted.
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2 class="legal-heading">5. Limitation of Liability</h2>
+            <p class="legal-text">
+              Under no circumstances shall the authors or copyright holders be liable for any direct, indirect, incidental, or consequential damages arising from the use of or inability to use this software.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- User Profile & Preferences View -->
+      <section id="profileView" class="profile-container" aria-label="User Profile & Settings">
+        <article class="profile-card">
+          <!-- Top Ad-Free Forever Banner with Live Micro-Animation -->
+          <aside class="ad-free-banner" aria-label="Ad-Free Guarantee">
+            <div class="ad-free-banner-content">
+              <div class="ad-free-badge-icon" aria-hidden="true">
+                <span data-icon="shield"></span>
+              </div>
+              <div class="ad-free-text-col">
+                <div class="ad-free-headline">
+                  <span class="ad-free-title">100% Ad-Free Forever</span>
+                  <span class="ad-free-pill">
+                    <span class="ad-free-live-dot"></span>
+                    <span>PROMISE</span>
+                  </span>
+                </div>
+                <p class="ad-free-desc">No advertisements, zero third-party tracking, and lifetime privacy.</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Profile Section Aligned Under Banner -->
+          <div class="profile-top-banner">
+            <div class="profile-user-summary">
+              <div class="profile-avatar-large">
+                <span data-icon="user"></span>
+              </div>
+              <div>
+                <h1 class="profile-headline" id="profileDisplayName">User Account</h1>
+                <p class="profile-subline" id="profileUserHandleEmail">@username</p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm btn-icon-only profile-pencil-btn" id="btnEditProfile" title="Edit Profile Details" aria-label="Edit Profile Details">
+              <span data-icon="edit"></span>
+            </button>
+          </div>
+
+          <!-- Expandable Account Modification Form (Toggled by Pencil Icon) -->
+          <div class="modify-account-expandable" id="modifyAccountContainer" style="display: none;">
+            <div class="modify-account-header">
+              <span class="modify-account-heading">Modify Account Details</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnCloseAccountModifyTop" aria-label="Close modification form">
+                <span data-icon="close"></span>
+              </button>
+            </div>
+            <form id="profileAccountForm" class="auth-form" style="max-width: 520px;">
+              <div class="form-field">
+                <label class="form-label" for="editProfileName">Full Name</label>
+                <input type="text" class="form-input" id="editProfileName" required autocomplete="name">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="editProfileEmail">Email Address</label>
+                <input type="email" class="form-input" id="editProfileEmail" required autocomplete="email">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="editProfileNewPassword">New Password (leave empty to keep current)</label>
+                <input type="password" class="form-input" id="editProfileNewPassword" placeholder="Minimum 6 characters" minlength="6" autocomplete="new-password">
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <button type="submit" class="btn btn-primary btn-sm" style="height: 36px;">
+                  Save Account Changes
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnCancelAccountModify" style="height: 36px;">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Section 2: Customization (Collapsible Accordion) -->
+          <div class="profile-section-block customization-section">
+            <button type="button" class="customization-accordion-toggle" id="customizationToggleBtn" aria-expanded="false" aria-controls="customizationOptionsContent">
+              <div class="customization-toggle-left">
+                <span data-icon="palette"></span>
+                <span class="customization-toggle-title">Customization</span>
+              </div>
+              <span class="customization-toggle-chevron" id="customizationToggleChevron" data-icon="chevronDown"></span>
+            </button>
+            
+            <div class="customization-options-content" id="customizationOptionsContent" style="display: none;">
+              <p class="profile-section-desc">Personalize the application color theme and mobile taskbar geometry.</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <span class="form-label">Application Color Theme</span>
+                <div class="swatch-group" id="taskbarColorSwatches">
+                  <button type="button" class="swatch-btn active" data-taskbar-color="rose">
+                    <span class="swatch-color-dot" style="background-color: #d8a2a2;"></span> Dusty Rose
+                  </button>
+                  <button type="button" class="swatch-btn" data-taskbar-color="blush">
+                    <span class="swatch-color-dot" style="background-color: #ffdcdc;"></span> Soft Blush
+                  </button>
+                  <button type="button" class="swatch-btn" data-taskbar-color="vanilla">
+                    <span class="swatch-color-dot" style="background-color: #fff9d6;"></span> Vanilla Cream
+                  </button>
+                  <button type="button" class="swatch-btn" data-taskbar-color="moss">
+                    <span class="swatch-color-dot" style="background-color: #8ea66b;"></span> Meadow Moss
+                  </button>
+                  <button type="button" class="swatch-btn" data-taskbar-color="charcoal">
+                    <span class="swatch-color-dot" style="background-color: #181213;"></span> Velvet Charcoal
+                  </button>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 6px;">
+                <span class="form-label">Taskbar Shape</span>
+                <div class="shape-btn-group" id="taskbarShapeGroup">
+                  <button type="button" class="shape-btn active" data-taskbar-shape="box">
+                    Edge-to-Edge Box (0px)
+                  </button>
+                  <button type="button" class="shape-btn" data-taskbar-shape="rounded">
+                    Top Rounded (8px)
+                  </button>
+                  <button type="button" class="shape-btn" data-taskbar-shape="floating">
+                    Floating Bar (8px)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Donate & Support Future Development -->
+          <div class="profile-section-block" id="donateSectionBlock">
+            <div class="donate-section-header">
+              <div>
+                <h2 class="profile-section-heading">
+                  <span data-icon="heart"></span> Donate &amp; Support Future Development
+                </h2>
+                <p class="profile-section-desc">TaskCore is 100% ad-free forever. Donate to back independent development and unlock all premium features.</p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="donate-scroll-hint">Scroll sideways &rarr;</span>
+                <span class="badge badge-medium" id="activeDonationBadge" style="display: none;">Active Patron</span>
+              </div>
+            </div>
+            
+            <div class="donation-grid">
+              <!-- Plan 1: 1 Month (₹29) -->
+              <div class="donate-card" id="donatePlan1m">
+                <div class="donate-header">
+                  <span class="donate-name">1 Month</span>
+                </div>
+                <div class="donate-price">₹29 <span class="donate-period">/ 1 month</span></div>
+                <p class="donate-tagline">Quick feature pass and support.</p>
+                <ul class="donate-features">
+                  <li><span data-icon="check"></span> Full feature access unlocked</li>
+                  <li><span data-icon="check"></span> 100% ad-free forever promise</li>
+                  <li><span data-icon="check"></span> Private offline storage</li>
+                  <li><span data-icon="check"></span> Community supporter status</li>
+                </ul>
+                <button type="button" class="btn btn-secondary btn-sm btn-donate-action" data-donate-plan="1m" style="margin-top: auto; width: 100%;">
+                  <span>Donate ₹29</span>
+                </button>
+              </div>
+
+              <!-- Plan 2: 3 Months (₹89) -->
+              <div class="donate-card" id="donatePlan3m">
+                <div class="donate-header">
+                  <span class="donate-name">3 Months</span>
+                  <span class="badge badge-medium" style="font-size: 10px;">Popular</span>
+                </div>
+                <div class="donate-price">₹89 <span class="donate-period">/ 3 months</span></div>
+                <p class="donate-tagline">Quarterly sustained momentum.</p>
+                <ul class="donate-features">
+                  <li><span data-icon="check"></span> Full feature access unlocked</li>
+                  <li><span data-icon="check"></span> 100% ad-free forever promise</li>
+                  <li><span data-icon="check"></span> All themes &amp; color swatches</li>
+                  <li><span data-icon="check"></span> Direct roadmap feedback</li>
+                </ul>
+                <button type="button" class="btn btn-primary btn-sm btn-donate-action" data-donate-plan="3m" style="margin-top: auto; width: 100%;">
+                  <span>Donate ₹89</span>
+                </button>
+              </div>
+
+              <!-- Plan 3: 6 Months (₹159) -->
+              <div class="donate-card" id="donatePlan6m">
+                <div class="donate-header">
+                  <span class="donate-name">6 Months</span>
+                </div>
+                <div class="donate-price">₹159 <span class="donate-period">/ 6 months</span></div>
+                <p class="donate-tagline">Half-year continuous backer.</p>
+                <ul class="donate-features">
+                  <li><span data-icon="check"></span> Full feature access unlocked</li>
+                  <li><span data-icon="check"></span> 100% ad-free forever promise</li>
+                  <li><span data-icon="check"></span> Priority feature voting</li>
+                  <li><span data-icon="check"></span> Future development patron</li>
+                </ul>
+                <button type="button" class="btn btn-secondary btn-sm btn-donate-action" data-donate-plan="6m" style="margin-top: auto; width: 100%;">
+                  <span>Donate ₹159</span>
+                </button>
+              </div>
+
+              <!-- Plan 4: 1 Year (₹300) -->
+              <div class="donate-card" id="donatePlan1y">
+                <div class="donate-header">
+                  <span class="donate-name">1 Year</span>
+                  <span class="badge badge-low" style="font-size: 10px; background: rgba(142,166,107,0.2); color: #8ea66b;">Best Value</span>
+                </div>
+                <div class="donate-price">₹299 <span class="donate-period">/ 1 year</span></div>
+                <p class="donate-tagline">Annual patron (only ₹25/mo).</p>
+                <ul class="donate-features">
+                  <li><span data-icon="check"></span> Full feature access unlocked</li>
+                  <li><span data-icon="check"></span> 100% ad-free forever promise</li>
+                  <li><span data-icon="check"></span> Annual patron badge</li>
+                  <li><span data-icon="check"></span> VIP support &amp; early updates</li>
+                </ul>
+                <button type="button" class="btn btn-primary btn-sm btn-donate-action" data-donate-plan="1y" style="margin-top: auto; width: 100%;">
+                  <span>Donate ₹299</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Free Option fallback -->
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnSelectFreePlan" style="font-size: 12px; color: var(--text-muted);">
+                Switch to Community Free Edition
+              </button>
+            </div>
+          </div>
+
+          <!-- Section 4: Productivity Widgets -->
+          <div class="profile-section-block" id="widgetsSectionBlock">
+            <h2 class="profile-section-heading">
+              <span data-icon="layout"></span> Productivity Widgets
+            </h2>
+            <p class="profile-section-desc">Interactive micro-tools to enhance your focus and daily workflow.</p>
+
+            <div class="widgets-grid">
+              <!-- Widget 1: Focus Sprint Timer -->
+              <div class="widget-card" id="widgetPomodoro">
+                <div class="widget-card-header">
+                  <div class="widget-card-title-wrap">
+                    <span data-icon="clock"></span>
+                    <span class="widget-card-title">Focus Sprint Timer</span>
+                  </div>
+                  <span class="widget-badge" id="timerStatusBadge">Ready</span>
+                </div>
+                <div class="widget-timer-display" id="widgetTimerDisplay">25:00</div>
+                <div class="widget-timer-presets">
+                  <button type="button" class="btn-timer-preset active" data-time="1500">25m Deep</button>
+                  <button type="button" class="btn-timer-preset" data-time="900">15m Sprint</button>
+                  <button type="button" class="btn-timer-preset" data-time="300">5m Pause</button>
+                </div>
+                <div class="widget-timer-controls">
+                  <button type="button" class="btn btn-primary btn-sm" id="btnTimerToggle" style="flex: 1;">
+                    <span data-icon="play"></span> Start
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm btn-icon-only" id="btnTimerReset" title="Reset Timer" aria-label="Reset Timer">
+                    <span data-icon="rotateCcw"></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Widget 2: Daily Focus Mindset Quote -->
+              <div class="widget-card" id="widgetQuote">
+                <div class="widget-card-header">
+                  <div class="widget-card-title-wrap">
+                    <span data-icon="star"></span>
+                    <span class="widget-card-title">Daily Focus Mindset</span>
+                  </div>
+                  <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="btnRefreshQuote" title="Next Mindset Thought" aria-label="Next Mindset Thought">
+                    <span data-icon="repeat"></span>
+                  </button>
+                </div>
+                <div class="widget-quote-body">
+                  <blockquote class="widget-quote-text" id="widgetQuoteText">
+                    "Focus is saying no to the 100 other good ideas."
+                  </blockquote>
+                  <cite class="widget-quote-author" id="widgetQuoteAuthor">Steve Jobs</cite>
+                </div>
+              </div>
+
+              <!-- Widget 3: Quick Thought Scratchpad -->
+              <div class="widget-card" id="widgetScratchpad">
+                <div class="widget-card-header">
+                  <div class="widget-card-title-wrap">
+                    <span data-icon="fileText"></span>
+                    <span class="widget-card-title">Quick Scratchpad</span>
+                  </div>
+                  <span class="scratchpad-status-indicator" id="scratchpadStatus">Auto-Saved</span>
+                </div>
+                <textarea class="widget-scratchpad-area" id="widgetScratchpadArea" placeholder="Jot down quick thoughts, temporary notes, or phone numbers without cluttering tasks..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: Logged-in Devices -->
+          <div class="profile-section-block">
+            <h2 class="profile-section-heading">
+              <span data-icon="laptop"></span> Logged-in Devices
+            </h2>
+            <p class="profile-section-desc">Active sessions linked to your local user credentials.</p>
+            <div class="device-list" id="devicesListContainer">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Section 6: Feedback & Future Requests -->
+          <div class="profile-section-block" id="feedbackSectionBlock">
+            <h2 class="profile-section-heading">
+              <span data-icon="messageSquare"></span> Feedback &amp; Suggestions
+            </h2>
+            <p class="profile-section-desc">Share feature requests, bug reports, or suggestions to guide upcoming releases.</p>
+
+            <form class="feedback-card" id="feedbackForm">
+              <div class="feedback-form-row">
+                <div class="form-field" style="flex: 1; min-width: 140px;">
+                  <label class="form-label" for="feedbackCategorySelect">Feedback Topic</label>
+                  <select class="form-select" id="feedbackCategorySelect">
+                    <option value="feature">Feature Request</option>
+                    <option value="bug">Bug Report</option>
+                    <option value="ux">Design &amp; Usability</option>
+                    <option value="appreciation">General Appreciation</option>
+                  </select>
+                </div>
+                <div class="form-field" style="flex: 1; min-width: 140px;">
+                  <label class="form-label">Experience Rating</label>
+                  <div class="feedback-rating-group" id="feedbackRatingGroup">
+                    <button type="button" class="btn-rating-star" data-rating="1" title="1 Star">1 ★</button>
+                    <button type="button" class="btn-rating-star" data-rating="2" title="2 Stars">2 ★</button>
+                    <button type="button" class="btn-rating-star" data-rating="3" title="3 Stars">3 ★</button>
+                    <button type="button" class="btn-rating-star" data-rating="4" title="4 Stars">4 ★</button>
+                    <button type="button" class="btn-rating-star active" data-rating="5" title="5 Stars">5 ★</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-field" style="margin-top: 10px;">
+                <label class="form-label" for="feedbackMessageArea">Your Message &amp; Suggestions *</label>
+                <textarea class="form-textarea" id="feedbackMessageArea" rows="3" placeholder="Tell us what features or improvements you would like to see in future updates..." required style="resize: vertical; min-height: 70px;"></textarea>
+              </div>
+
+              <div class="feedback-submit-row">
+                <span class="feedback-note">Saved privately in local storage.</span>
+                <button type="submit" class="btn btn-primary btn-sm" id="btnSubmitFeedback">
+                  <span data-icon="send"></span> Submit Feedback
+                </button>
+              </div>
+            </form>
+
+            <!-- Feedback History Feed -->
+            <div class="feedback-history-wrap" id="feedbackHistoryWrap" style="margin-top: 16px;">
+              <h3 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin: 0 0 10px 0;">Recent Submissions</h3>
+              <div class="feedback-history-list" id="feedbackHistoryList">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 7: App Version & Legal Links -->
+          <div class="profile-section-block">
+            <h2 class="profile-section-heading">
+              <span data-icon="info"></span> App Version & Legal Policies
+            </h2>
+            <div class="version-card">
+              <div class="version-text-col">
+                <span class="version-number">TaskCore Application v1.2.0</span>
+                <span class="version-build">Build Release 2026.10.08 - Client Offline Edition</span>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn btn-secondary btn-sm" data-view-target="privacy">Privacy Policy</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-view-target="terms">Terms of Service</button>
+              </div>
+            </div>
+          </div>
+
+        </article>
+      </section>
+
+      <!-- Habits Tracker View -->
+      <section id="habitsView" class="habits-container" aria-label="Habits Tracker">
+        <div class="habits-view-card">
+          <!-- Habits Header Toolbar -->
+          <div class="habits-header-bar">
+            <div class="habits-title-group">
+              <div class="habits-icon-box">
+                <span data-icon="repeat"></span>
+              </div>
+              <div>
+                <h1 class="habits-main-title">Habits Tracker</h1>
+                <p class="habits-subtitle">Daily rituals, routine consistency, and streak momentum</p>
+              </div>
+            </div>
+            <div class="habits-controls">
+              <button type="button" class="btn btn-primary btn-sm" id="btnOpenNewHabitModal">
+                <span data-icon="plus"></span> Add Habit
+              </button>
+            </div>
+          </div>
+
+          <!-- Habit Summary Metrics Bar -->
+          <section class="metrics-row-bar habits-metrics-bar" aria-label="Habit Progress Indicators">
+            <div class="metric-item metric-item-active" title="Active Habits">
+              <span class="metric-symbol" data-icon="repeat"></span>
+              <span class="metric-value" id="metricActiveHabits">0</span>
+            </div>
+            <div class="metric-item metric-item-completed" title="Completed Today">
+              <span class="metric-symbol" data-icon="check"></span>
+              <span class="metric-value" id="metricCompletedHabits">0</span>
+            </div>
+            <div class="metric-item metric-item-today" title="Best Streak">
+              <span class="metric-symbol" data-icon="flame"></span>
+              <span class="metric-value" id="metricBestStreak">0d</span>
+            </div>
+            <div class="metric-item metric-item-overdue" title="Completion Rate Today">
+              <span class="metric-symbol" data-icon="tasks"></span>
+              <span class="metric-value" id="metricHabitRate">0%</span>
+            </div>
+          </section>
+
+          <!-- Habit Cards List -->
+          <div class="habits-list-feed" id="habitsListContainer" aria-label="Habit Items">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="habitsEmptyState" style="display: none;">
+            <div class="empty-icon" data-icon="repeat"></div>
+            <h2 class="empty-title">No habits created yet</h2>
+            <p class="empty-desc">Build momentum with small daily rituals. Create your first habit to start tracking streaks.</p>
+            <button type="button" class="btn btn-primary btn-sm" id="btnCreateFirstHabit" style="margin-top: 12px;">
+              <span data-icon="plus"></span> Create Habit
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Tracker View -->
+      <section id="projectsView" class="projects-container" aria-label="Projects Tracker">
+        <div class="projects-view-card">
+          <!-- Projects Header Toolbar -->
+          <div class="projects-header-bar">
+            <div class="projects-title-group">
+              <div class="projects-icon-box">
+                <span data-icon="briefcase"></span>
+              </div>
+              <div>
+                <h1 class="projects-main-title">Projects Tracker</h1>
+                <p class="projects-subtitle">Goal milestones, project roadmaps, and execution tracking</p>
+              </div>
+            </div>
+            <div class="projects-controls">
+              <button type="button" class="btn btn-primary btn-sm" id="btnOpenNewProjectModal">
+                <span data-icon="plus"></span> Add Project
+              </button>
+            </div>
+          </div>
+
+          <!-- Project Summary Metrics Bar -->
+          <section class="metrics-row-bar projects-metrics-bar" aria-label="Project Progress Indicators">
+            <div class="metric-item metric-item-active" title="Total Projects">
+              <span class="metric-symbol" data-icon="briefcase"></span>
+              <span class="metric-value" id="metricTotalProjects">0</span>
+            </div>
+            <div class="metric-item metric-item-completed" title="Active Projects">
+              <span class="metric-symbol" data-icon="check"></span>
+              <span class="metric-value" id="metricActiveProjects">0</span>
+            </div>
+            <div class="metric-item metric-item-today" title="Completed Projects">
+              <span class="metric-symbol" data-icon="checkSquare"></span>
+              <span class="metric-value" id="metricCompletedProjects">0</span>
+            </div>
+            <div class="metric-item metric-item-overdue" title="Average Task Progress">
+              <span class="metric-symbol" data-icon="tasks"></span>
+              <span class="metric-value" id="metricProjectAvgProgress">0%</span>
+            </div>
+          </section>
+
+          <!-- Projects Grid / Cards Feed -->
+          <div class="projects-grid-feed" id="projectsListContainer" aria-label="Project Cards">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state" id="projectsEmptyState" style="display: none;">
+            <div class="empty-icon" data-icon="briefcase"></div>
+            <h2 class="empty-title">No projects created yet</h2>
+            <p class="empty-desc">Organize multiple related tasks toward a major milestone. Create your first project to track progress.</p>
+            <button type="button" class="btn btn-primary btn-sm" id="btnCreateFirstProject" style="margin-top: 12px;">
+              <span data-icon="plus"></span> Create Project
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar (Taskbar) -->
+    <nav class="mobile-bottom-nav taskbar-color-rose taskbar-shape-box" id="mobileBottomNav" aria-label="Mobile Navigation">
+      <div class="mobile-bottom-nav-inner">
+        <button type="button" class="mobile-nav-btn active" id="mobileNavTasks">
+          <span data-icon="tasks"></span>
+          <span>Tasks</span>
+        </button>
+        <button type="button" class="mobile-nav-btn" id="mobileNavHabits">
+          <span data-icon="repeat"></span>
+          <span>Habits</span>
+        </button>
+        <button type="button" class="mobile-nav-btn btn-fab" id="mobileNavAdd" aria-label="Add task">
+          <span data-icon="plus"></span>
+        </button>
+        <button type="button" class="mobile-nav-btn" id="mobileNavProjects">
+          <span data-icon="briefcase"></span>
+          <span>Projects</span>
+        </button>
+        <button type="button" class="mobile-nav-btn" id="mobileNavProfile">
+          <span data-icon="user"></span>
+          <span>Profile</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Task Detail / Edit Modal -->
+  <div class="modal-overlay" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTitleLabel">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitleLabel">Edit Task</h2>
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="taskModalCloseBtn" aria-label="Close modal">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <form id="taskModalForm">
+        <input type="hidden" id="modalTaskId">
+        <div class="modal-body">
+          <div class="form-field">
+            <label class="form-label" for="modalTaskTitle">Title</label>
+            <input type="text" class="form-input" id="modalTaskTitle" required autocomplete="off">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="modalTaskDescription">Notes / Description</label>
+            <textarea class="form-textarea" id="modalTaskDescription" placeholder="Add optional details, specifications, or links..."></textarea>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="modalTaskCategory">Category</label>
+              <select class="form-select" id="modalTaskCategory">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="modalTaskPriority">Priority</label>
+              <select class="form-select" id="modalTaskPriority">
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="modalTaskDate">Due Date</label>
+              <input type="date" class="form-input" id="modalTaskDate">
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="modalTaskTime">Due Time</label>
+              <input type="time" class="form-input" id="modalTaskTime">
+            </div>
+          </div>
+
+          <!-- Subtasks Checklist Section -->
+          <div class="subtasks-section" id="modalSubtasksSection">
+            <label class="form-label">Checklist Subtasks</label>
+            <div class="subtasks-list" id="modalSubtasksList">
+              <!-- Populated dynamically -->
+            </div>
+            <div class="subtask-add-row">
+              <input type="text" class="form-input" id="modalNewSubtaskInput" placeholder="Add checklist item..." autocomplete="off">
+              <button type="button" class="btn btn-secondary btn-sm" id="modalAddSubtaskBtn">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm" id="modalDeleteBtn" style="margin-right: auto;">
+            <span data-icon="trash"></span> Delete
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="taskModalCancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="taskModalSubmitBtn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Category Create Modal -->
+  <div class="modal-overlay" id="categoryModal" role="dialog" aria-modal="true" aria-labelledby="catModalLabel">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="catModalLabel">Create Category</h2>
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="categoryModalCloseBtn" aria-label="Close modal">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <form id="categoryForm">
+        <div class="modal-body">
+          <div class="form-field">
+            <label class="form-label" for="categoryNameInput">Category Name</label>
+            <input type="text" class="form-input" id="categoryNameInput" placeholder="e.g. Finance, Health, Project X" required autocomplete="off">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="categoryColorInput">Category Color Tag</label>
+            <input type="color" class="form-input" id="categoryColorInput" value="#d8a2a2" style="padding: 4px; height: 42px; cursor: pointer;">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm">Create Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Habit Detail / Edit Modal -->
+  <div class="modal-overlay" id="habitModal" role="dialog" aria-modal="true" aria-labelledby="habitModalTitleLabel">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="habitModalTitleLabel">New Habit</h2>
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="habitModalCloseBtn" aria-label="Close modal">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <form id="habitModalForm">
+        <input type="hidden" id="modalHabitId">
+        <div class="modal-body">
+          <div class="form-field">
+            <label class="form-label" for="modalHabitTitle">Habit Name *</label>
+            <input type="text" class="form-input" id="modalHabitTitle" placeholder="e.g. Read 20 pages, Morning Run, Meditate" required autocomplete="off">
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="modalHabitCategory">Category</label>
+              <select class="form-select" id="modalHabitCategory">
+                <option value="Health">Health</option>
+                <option value="Wellness">Wellness</option>
+                <option value="Learning">Learning</option>
+                <option value="Focus">Focus</option>
+                <option value="Personal">Personal</option>
+                <option value="Work">Work</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="modalHabitFrequency">Frequency</label>
+              <select class="form-select" id="modalHabitFrequency">
+                <option value="daily">Daily</option>
+                <option value="weekdays">Weekdays (Mon-Fri)</option>
+                <option value="weekends">Weekends Only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="habitModalCancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Habit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Project Detail / Edit Modal -->
+  <div class="modal-overlay" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitleLabel">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="projectModalTitleLabel">New Project</h2>
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="projectModalCloseBtn" aria-label="Close modal">
+          <span data-icon="close"></span>
+        </button>
+      </div>
+      <form id="projectModalForm">
+        <input type="hidden" id="modalProjectId">
+        <div class="modal-body">
+          <div class="form-field">
+            <label class="form-label" for="modalProjectName">Project Name *</label>
+            <input type="text" class="form-input" id="modalProjectName" placeholder="e.g. Website Revamp, Q4 Launch, Studio Setup" required autocomplete="off">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="modalProjectDescription">Description / Objective</label>
+            <textarea class="form-textarea" id="modalProjectDescription" rows="2" placeholder="Key goals and deliverables for this project..." style="resize: vertical; min-height: 60px;"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="modalProjectCategory">Category</label>
+              <select class="form-select" id="modalProjectCategory">
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Health">Health</option>
+                <option value="Learning">Learning</option>
+                <option value="Finance">Finance</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="modalProjectStatus">Status</label>
+              <select class="form-select" id="modalProjectStatus">
+                <option value="active">Active</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="on_hold">On Hold</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label" for="modalProjectDeadline">Target Deadline</label>
+              <input type="date" class="form-input" id="modalProjectDeadline">
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="modalProjectColor">Accent Color</label>
+              <select class="form-select" id="modalProjectColor">
+                <option value="#d8a2a2">Dusty Rose</option>
+                <option value="#8ea66b">Meadow Moss</option>
+                <option value="#c49b6b">Warm Ochre</option>
+                <option value="#ffdcdc">Soft Blush</option>
+                <option value="#fff9d6">Vanilla Cream</option>
+                <option value="#4a5568">Slate Gray</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm" id="modalProjectDeleteBtn" style="display: none; margin-right: auto;">
+            <span data-icon="trash"></span> Delete
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="projectModalCancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Application Script Module -->
+  <script type="module" src="scripts/app.js?v=10"></script>
+</body>
+</html>
