@@ -1623,11 +1623,11 @@ a:hover {
   }
 
   .top-header {
-    padding: 0 16px;
+    display: none !important;
   }
 
   .workspace-content {
-    padding: 14px 12px;
+    padding: 16px 12px;
     margin-bottom: calc(var(--bottom-nav-height) + 16px);
   }
 
