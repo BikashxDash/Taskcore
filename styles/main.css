@@ -1628,7 +1628,7 @@ a:hover {
 
   .workspace-content {
     padding: 14px 12px;
-    margin-bottom: 24px;
+    margin-bottom: calc(var(--bottom-nav-height) + 16px);
   }
 
   .workspace-card {
@@ -1689,17 +1689,11 @@ a:hover {
   }
 
   #btnOpenNewTaskModal {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 4px;
-    height: 32px;
-    font-size: 12px;
-    padding: 0 10px;
-    white-space: nowrap;
+    display: none;
   }
 
   .mobile-bottom-nav {
-    display: none !important;
+    display: block;
   }
 
   .auth-screen:not([style*="display: none"]) ~ #appContainer .mobile-bottom-nav,
@@ -1711,7 +1705,7 @@ a:hover {
 
   .legal-page-container {
     padding: 14px 12px;
-    margin-bottom: 24px;
+    margin-bottom: calc(var(--bottom-nav-height) + 16px);
   }
 
   .legal-article {
