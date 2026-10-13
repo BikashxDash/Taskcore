@@ -8,8 +8,8 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css?v=16">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css?v=17">
   <script>
     (function() {
       try {
@@ -42,6 +42,28 @@
   </script>
 </head>
 <body>
+
+  <!-- Apple Mac-Style Cursive Animated Welcome Screen -->
+  <aside class="welcome-screen" id="welcomeScreen" aria-label="Welcome Screen">
+    <div class="welcome-ambient-glow"></div>
+    <div class="welcome-card">
+      <div class="welcome-cursive-wrap">
+        <svg class="mac-cursive-svg" viewBox="0 0 500 160" aria-label="Welcome">
+          <text class="mac-text-stroke" x="250" y="110" text-anchor="middle">welcome</text>
+        </svg>
+      </div>
+      <div class="welcome-brand-row">
+        <span class="welcome-brand-title">TaskCore</span>
+        <span class="welcome-brand-dot">•</span>
+        <span class="welcome-brand-tagline">Distraction-Free Agenda</span>
+      </div>
+      <button type="button" class="btn welcome-continue-btn" id="welcomeContinueBtn" aria-label="Continue to App">
+        <span>Get Started</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
+      <span class="welcome-skip-hint">Click anywhere or press any key to enter</span>
+    </div>
+  </aside>
 
   <!-- Mandatory Authentication Screen -->
   <section class="auth-screen" id="authScreen" aria-label="Account Authentication">
@@ -1268,6 +1290,6 @@
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
   <!-- Application Script Module -->
-  <script type="module" src="scripts/app.js?v=11"></script>
+  <script type="module" src="scripts/app.js?v=12"></script>
 </body>
 </html>

@@ -14,6 +14,10 @@ import { renderIcon } from './icons.js';
 
 // DOM Element Selectors
 const elements = {
+  // Welcome Screen
+  welcomeScreen: document.getElementById('welcomeScreen'),
+  welcomeContinueBtn: document.getElementById('welcomeContinueBtn'),
+
   // Authentication Elements
   authScreen: document.getElementById('authScreen'),
   appContainer: document.getElementById('appContainer'),
@@ -2323,6 +2327,47 @@ function setupEvents() {
   });
 }
 
+// Welcome Screen Controller
+let welcomeDismissTimer = null;
+
+function dismissWelcomeScreen() {
+  if (!elements.welcomeScreen || elements.welcomeScreen.classList.contains('is-hidden')) return;
+  if (welcomeDismissTimer) {
+    clearTimeout(welcomeDismissTimer);
+    welcomeDismissTimer = null;
+  }
+  elements.welcomeScreen.classList.add('is-hidden');
+  setTimeout(() => {
+    if (elements.welcomeScreen) {
+      elements.welcomeScreen.style.display = 'none';
+    }
+  }, 600);
+}
+
+function initWelcomeScreen() {
+  if (!elements.welcomeScreen) return;
+
+  elements.welcomeContinueBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dismissWelcomeScreen();
+  });
+
+  elements.welcomeScreen.addEventListener('click', () => {
+    dismissWelcomeScreen();
+  });
+
+  window.addEventListener('keydown', () => {
+    if (elements.welcomeScreen && !elements.welcomeScreen.classList.contains('is-hidden')) {
+      dismissWelcomeScreen();
+    }
+  });
+
+  // Auto-dismiss after 4.2 seconds
+  welcomeDismissTimer = setTimeout(() => {
+    dismissWelcomeScreen();
+  }, 4200);
+}
+
 // Initial Boot
 function init() {
   const savedTheme = localStorage.getItem('task_core_theme') || store.getSettings().theme || 'light';
@@ -2334,6 +2379,7 @@ function init() {
     el.innerHTML = renderIcon(iconName);
   });
 
+  initWelcomeScreen();
   setupEvents();
   checkAuthState();
   applyTaskbarAppearance();
