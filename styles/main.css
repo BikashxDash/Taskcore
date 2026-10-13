@@ -1603,18 +1603,23 @@ a:hover {
   }
 
   #headerLogoutBtn {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 10px;
-    height: 34px;
-    font-size: 12px;
+    display: none !important;
+  }
+
+  .mobile-app-logo {
+    display: none !important;
   }
 
   .mobile-app-branding {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
+  }
+
+  .mobile-app-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   .top-header {
@@ -1623,7 +1628,7 @@ a:hover {
 
   .workspace-content {
     padding: 14px 12px;
-    margin-bottom: calc(var(--bottom-nav-height) + 16px);
+    margin-bottom: 24px;
   }
 
   .workspace-card {
@@ -1672,7 +1677,7 @@ a:hover {
     align-items: center;
     justify-content: flex-end;
     flex-shrink: 0;
-    gap: 0;
+    gap: 8px;
   }
 
   .toolbar-controls .form-select {
@@ -1684,11 +1689,17 @@ a:hover {
   }
 
   #btnOpenNewTaskModal {
-    display: none;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    height: 32px;
+    font-size: 12px;
+    padding: 0 10px;
+    white-space: nowrap;
   }
 
   .mobile-bottom-nav {
-    display: block;
+    display: none !important;
   }
 
   .auth-screen:not([style*="display: none"]) ~ #appContainer .mobile-bottom-nav,
@@ -1700,7 +1711,7 @@ a:hover {
 
   .legal-page-container {
     padding: 14px 12px;
-    margin-bottom: calc(var(--bottom-nav-height) + 16px);
+    margin-bottom: 24px;
   }
 
   .legal-article {
