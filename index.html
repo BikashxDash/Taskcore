@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TaskCore - Fast, Distraction-Free Task Manager</title>
-  <meta name="description" content="A fast, private, distraction-free task management tool for desktop and mobile web browsers. Zero tracking, 100% local data storage.">
+  <meta name="description"
+    content="A fast, private, distraction-free task management tool for desktop and mobile web browsers. Zero tracking, 100% local data storage.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css?v=17">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css?v=18">
   <script>
-    (function() {
+    (function () {
       try {
         var theme = localStorage.getItem('task_core_theme');
         var accent = localStorage.getItem('task_core_accent');
@@ -27,7 +30,7 @@
                 if (settings && (settings.appColor || settings.taskbarColor) && !accent) {
                   accent = settings.appColor || settings.taskbarColor;
                 }
-               }
+              }
             }
           }
         }
@@ -37,10 +40,11 @@
           document.documentElement.setAttribute('data-theme', 'light');
         }
         document.documentElement.setAttribute('data-accent', accent || 'rose');
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
 </head>
+
 <body>
 
   <!-- Apple Mac-Style Cursive Animated Welcome Screen -->
@@ -59,7 +63,11 @@
       </div>
       <button type="button" class="btn welcome-continue-btn" id="welcomeContinueBtn" aria-label="Continue to App">
         <span>Get Started</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
       </button>
       <span class="welcome-skip-hint">Click anywhere or press any key to enter</span>
     </div>
@@ -70,7 +78,10 @@
     <div class="auth-card">
       <div class="auth-brand">
         <div class="auth-brand-icon" aria-label="TaskCore">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="square">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
         </div>
       </div>
 
@@ -86,7 +97,8 @@
           <label class="form-label" for="loginIdentifier">Email or Username</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="user"></span>
-            <input type="text" class="auth-input" id="loginIdentifier" placeholder="name@example.com or username" required autocomplete="username">
+            <input type="text" class="auth-input" id="loginIdentifier" placeholder="name@example.com or username"
+              required autocomplete="username">
           </div>
         </div>
 
@@ -94,8 +106,10 @@
           <label class="form-label" for="loginPassword">Password</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="lock"></span>
-            <input type="password" class="auth-input has-toggle" id="loginPassword" placeholder="Enter password" required autocomplete="current-password">
-            <button type="button" class="auth-password-toggle-btn" data-toggle-target="loginPassword" aria-label="Toggle password visibility" title="Show or hide password">
+            <input type="password" class="auth-input has-toggle" id="loginPassword" placeholder="Enter password"
+              required autocomplete="current-password">
+            <button type="button" class="auth-password-toggle-btn" data-toggle-target="loginPassword"
+              aria-label="Toggle password visibility" title="Show or hide password">
               <span class="password-toggle-icon" data-icon="eye"></span>
             </button>
           </div>
@@ -117,7 +131,8 @@
           <label class="form-label" for="registerName">Full Name</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="user"></span>
-            <input type="text" class="auth-input" id="registerName" placeholder="e.g. Alex Morgan" required autocomplete="name">
+            <input type="text" class="auth-input" id="registerName" placeholder="e.g. Alex Morgan" required
+              autocomplete="name">
           </div>
         </div>
 
@@ -125,7 +140,8 @@
           <label class="form-label" for="registerEmail">Email Address</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="mail"></span>
-            <input type="email" class="auth-input" id="registerEmail" placeholder="name@example.com" required autocomplete="email">
+            <input type="email" class="auth-input" id="registerEmail" placeholder="name@example.com" required
+              autocomplete="email">
           </div>
         </div>
 
@@ -133,7 +149,8 @@
           <label class="form-label" for="registerUsername">Username</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="user"></span>
-            <input type="text" class="auth-input" id="registerUsername" placeholder="choose username" required autocomplete="username">
+            <input type="text" class="auth-input" id="registerUsername" placeholder="choose username" required
+              autocomplete="username">
           </div>
         </div>
 
@@ -141,8 +158,10 @@
           <label class="form-label" for="registerPassword">Password (6+ chars)</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="lock"></span>
-            <input type="password" class="auth-input has-toggle" id="registerPassword" placeholder="Create secure password" required minlength="6" autocomplete="new-password">
-            <button type="button" class="auth-password-toggle-btn" data-toggle-target="registerPassword" aria-label="Toggle password visibility" title="Show or hide password">
+            <input type="password" class="auth-input has-toggle" id="registerPassword"
+              placeholder="Create secure password" required minlength="6" autocomplete="new-password">
+            <button type="button" class="auth-password-toggle-btn" data-toggle-target="registerPassword"
+              aria-label="Toggle password visibility" title="Show or hide password">
               <span class="password-toggle-icon" data-icon="eye"></span>
             </button>
           </div>
@@ -152,8 +171,10 @@
           <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
           <div class="auth-input-wrap">
             <span class="auth-input-icon" data-icon="lock"></span>
-            <input type="password" class="auth-input has-toggle" id="registerConfirmPassword" placeholder="Confirm password" required minlength="6" autocomplete="new-password">
-            <button type="button" class="auth-password-toggle-btn" data-toggle-target="registerConfirmPassword" aria-label="Toggle password visibility" title="Show or hide password">
+            <input type="password" class="auth-input has-toggle" id="registerConfirmPassword"
+              placeholder="Confirm password" required minlength="6" autocomplete="new-password">
+            <button type="button" class="auth-password-toggle-btn" data-toggle-target="registerConfirmPassword"
+              aria-label="Toggle password visibility" title="Show or hide password">
               <span class="password-toggle-icon" data-icon="eye"></span>
             </button>
           </div>
@@ -184,12 +205,18 @@
       <div class="sidebar-header">
         <div class="brand-wrap">
           <div class="brand-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="square">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
           </div>
           <span class="brand-title">TaskCore</span>
         </div>
         <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="sidebarCloseBtn" aria-label="Close menu">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
       </div>
 
@@ -261,7 +288,8 @@
         <div>
           <div class="nav-group-title" style="display: flex; justify-content: space-between; align-items: center;">
             <span>Categories</span>
-            <button type="button" class="btn btn-ghost btn-sm" id="addCategoryBtn" style="padding: 2px 6px; font-size: 11px;">
+            <button type="button" class="btn btn-ghost btn-sm" id="addCategoryBtn"
+              style="padding: 2px 6px; font-size: 11px;">
               <span data-icon="plus"></span> New
             </button>
           </div>
@@ -297,7 +325,8 @@
 
       <div class="sidebar-footer">
         <div class="user-profile-badge" id="sidebarUserProfile">
-          <div class="user-profile-info" data-view-target="profile" style="cursor: pointer;" title="Open Profile & Settings">
+          <div class="user-profile-info" data-view-target="profile" style="cursor: pointer;"
+            title="Open Profile & Settings">
             <div class="user-avatar-box">
               <span data-icon="user"></span>
             </div>
@@ -306,7 +335,8 @@
               <span class="user-handle-text" id="sidebarUserHandle">@username</span>
             </div>
           </div>
-          <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="sidebarLogoutBtn" title="Sign Out" aria-label="Sign Out">
+          <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="sidebarLogoutBtn" title="Sign Out"
+            aria-label="Sign Out">
             <span data-icon="logOut"></span>
           </button>
         </div>
@@ -329,20 +359,24 @@
             <span class="mobile-app-logo" data-icon="checkSquare"></span>
             <span class="mobile-app-title">TaskCore</span>
           </div>
-          <button type="button" class="btn btn-ghost btn-icon-only mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <button type="button" class="btn btn-ghost btn-icon-only mobile-menu-btn" id="mobileMenuBtn"
+            aria-label="Open menu">
             <span data-icon="menu"></span>
           </button>
           <div class="search-bar-wrap">
             <span class="search-icon-slot" data-icon="search"></span>
-            <input type="search" class="search-input" id="searchInput" placeholder="Search tasks or press / to filter..." autocomplete="off">
-            <button type="button" class="btn btn-ghost btn-icon-only search-clear-btn" id="searchClearBtn" aria-label="Clear search">
+            <input type="search" class="search-input" id="searchInput"
+              placeholder="Search tasks or press / to filter..." autocomplete="off">
+            <button type="button" class="btn btn-ghost btn-icon-only search-clear-btn" id="searchClearBtn"
+              aria-label="Clear search">
               <span data-icon="close"></span>
             </button>
           </div>
         </div>
 
         <div class="header-right">
-          <button type="button" class="btn btn-ghost btn-sm" id="headerLogoutBtn" title="Sign Out" aria-label="Sign Out">
+          <button type="button" class="btn btn-ghost btn-sm" id="headerLogoutBtn" title="Sign Out"
+            aria-label="Sign Out">
             <span data-icon="logOut"></span>
             <span style="font-size: 12.5px;">Sign Out</span>
           </button>
@@ -365,7 +399,8 @@
                 <span class="calendar-selected-badge" id="calendarSelectedBadge">Today</span>
               </div>
               <div class="calendar-controls-group">
-                <button type="button" class="btn btn-ghost btn-sm btn-icon-only calendar-toggle-btn" id="calendarMaximizeBtn" title="Toggle Full Month View" aria-label="Toggle Calendar View">
+                <button type="button" class="btn btn-ghost btn-sm btn-icon-only calendar-toggle-btn"
+                  id="calendarMaximizeBtn" title="Toggle Full Month View" aria-label="Toggle Calendar View">
                   <span id="calendarMaximizeIcon" data-icon="maximize"></span>
                 </button>
               </div>
@@ -442,7 +477,8 @@
           <div class="empty-state" id="emptyState" style="display: none;">
             <div class="empty-icon" data-icon="inbox"></div>
             <h2 class="empty-title">No tasks found</h2>
-            <p class="empty-desc">Your agenda is clear for this view. Create a new task or switch to a different category filter.</p>
+            <p class="empty-desc">Your agenda is clear for this view. Create a new task or switch to a different
+              category filter.</p>
           </div>
 
         </div>
@@ -462,40 +498,48 @@
           <div class="legal-section">
             <h2 class="legal-heading">1. Zero Server Telemetry</h2>
             <p class="legal-text">
-              TaskCore is engineered with a strict privacy-first architecture. We do not operate remote tracking servers, third-party user telemetry, fingerprinting scripts, or analytic beacons. Your usage patterns and task details are never transmitted over the internet to our systems or third-party advertising brokers.
+              TaskCore is engineered with a strict privacy-first architecture. We do not operate remote tracking
+              servers, third-party user telemetry, fingerprinting scripts, or analytic beacons. Your usage patterns and
+              task details are never transmitted over the internet to our systems or third-party advertising brokers.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">2. Client-Side Data Storage</h2>
             <p class="legal-text">
-              All tasks, subtasks, categories, and user preferences are saved locally inside your web browser using HTML5 LocalStorage. The data resides exclusively on your device storage:
+              All tasks, subtasks, categories, and user preferences are saved locally inside your web browser using
+              HTML5 LocalStorage. The data resides exclusively on your device storage:
             </p>
             <ul class="legal-list">
               <li>No account registration or password is required.</li>
               <li>Clearing browser storage or site cache will reset stored data.</li>
-              <li>You can export a full JSON backup of all tasks at any time using the Export JSON feature in the sidebar.</li>
+              <li>You can export a full JSON backup of all tasks at any time using the Export JSON feature in the
+                sidebar.</li>
             </ul>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">3. Cookies and Trackers</h2>
             <p class="legal-text">
-              TaskCore does not deploy advertising cookies, behavioral tracking pixels, or cross-site tracking mechanisms. The application operates entirely offline after the initial page load.
+              TaskCore does not deploy advertising cookies, behavioral tracking pixels, or cross-site tracking
+              mechanisms. The application operates entirely offline after the initial page load.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">4. Data Deletion and Portability</h2>
             <p class="legal-text">
-              You retain complete ownership and sovereignty over your records. You can delete individual tasks, clear completed items, or import/export backup snapshots directly through the interface without needing external permissions.
+              You retain complete ownership and sovereignty over your records. You can delete individual tasks, clear
+              completed items, or import/export backup snapshots directly through the interface without needing external
+              permissions.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">5. Policy Updates</h2>
             <p class="legal-text">
-              Any amendments to this policy will be documented directly within this application view with an updated effective date.
+              Any amendments to this policy will be documented directly within this application view with an updated
+              effective date.
             </p>
           </div>
         </article>
@@ -515,35 +559,43 @@
           <div class="legal-section">
             <h2 class="legal-heading">1. Acceptance of Terms</h2>
             <p class="legal-text">
-              By accessing or using the TaskCore web application, you acknowledge and agree to comply with these Terms and Conditions. If you do not accept these terms, please discontinue use of the application.
+              By accessing or using the TaskCore web application, you acknowledge and agree to comply with these Terms
+              and Conditions. If you do not accept these terms, please discontinue use of the application.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">2. Local Storage Responsibility</h2>
             <p class="legal-text">
-              Because TaskCore operates client-side without a cloud synchronization database, data persistence is tied to your local browser environment. Users are solely responsible for creating regular JSON file backups of essential information using the provided export facility. We cannot recover data lost through hardware failure, manual cache clearing, or browser resets.
+              Because TaskCore operates client-side without a cloud synchronization database, data persistence is tied
+              to your local browser environment. Users are solely responsible for creating regular JSON file backups of
+              essential information using the provided export facility. We cannot recover data lost through hardware
+              failure, manual cache clearing, or browser resets.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">3. Permitted Use</h2>
             <p class="legal-text">
-              TaskCore is provided for personal, professional, and educational task organization. You agree not to attempt to reverse engineer, inject malicious scripts, or misuse the software in violation of local laws.
+              TaskCore is provided for personal, professional, and educational task organization. You agree not to
+              attempt to reverse engineer, inject malicious scripts, or misuse the software in violation of local laws.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">4. Disclaimer of Warranty</h2>
             <p class="legal-text">
-              The software is provided on an as-is and as-available basis without warranties of any kind, whether express or implied, including fitness for a particular purpose or non-infringement. We do not warrant that operation will be completely error-free or uninterrupted.
+              The software is provided on an as-is and as-available basis without warranties of any kind, whether
+              express or implied, including fitness for a particular purpose or non-infringement. We do not warrant that
+              operation will be completely error-free or uninterrupted.
             </p>
           </div>
 
           <div class="legal-section">
             <h2 class="legal-heading">5. Limitation of Liability</h2>
             <p class="legal-text">
-              Under no circumstances shall the authors or copyright holders be liable for any direct, indirect, incidental, or consequential damages arising from the use of or inability to use this software.
+              Under no circumstances shall the authors or copyright holders be liable for any direct, indirect,
+              incidental, or consequential damages arising from the use of or inability to use this software.
             </p>
           </div>
         </article>
@@ -583,10 +635,12 @@
               </div>
             </div>
             <div style="display: flex; gap: 8px; align-items: center;">
-              <button type="button" class="btn btn-secondary btn-sm btn-icon-only profile-pencil-btn" id="btnEditProfile" title="Edit Profile Details" aria-label="Edit Profile Details">
+              <button type="button" class="btn btn-secondary btn-sm btn-icon-only profile-pencil-btn"
+                id="btnEditProfile" title="Edit Profile Details" aria-label="Edit Profile Details">
                 <span data-icon="edit"></span>
               </button>
-              <button type="button" class="btn btn-danger btn-sm" id="profileLogoutBtn" title="Sign Out" aria-label="Sign Out">
+              <button type="button" class="btn btn-danger btn-sm" id="profileLogoutBtn" title="Sign Out"
+                aria-label="Sign Out">
                 <span data-icon="logOut"></span>
                 <span>Sign Out</span>
               </button>
@@ -597,7 +651,8 @@
           <div class="modify-account-expandable" id="modifyAccountContainer" style="display: none;">
             <div class="modify-account-header">
               <span class="modify-account-heading">Modify Account Details</span>
-              <button type="button" class="btn btn-ghost btn-sm" id="btnCloseAccountModifyTop" aria-label="Close modification form">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnCloseAccountModifyTop"
+                aria-label="Close modification form">
                 <span data-icon="close"></span>
               </button>
             </div>
@@ -611,14 +666,17 @@
                 <input type="email" class="form-input" id="editProfileEmail" required autocomplete="email">
               </div>
               <div class="form-field">
-                <label class="form-label" for="editProfileNewPassword">New Password (leave empty to keep current)</label>
-                <input type="password" class="form-input" id="editProfileNewPassword" placeholder="Minimum 6 characters" minlength="6" autocomplete="new-password">
+                <label class="form-label" for="editProfileNewPassword">New Password (leave empty to keep
+                  current)</label>
+                <input type="password" class="form-input" id="editProfileNewPassword" placeholder="Minimum 6 characters"
+                  minlength="6" autocomplete="new-password">
               </div>
               <div style="display: flex; gap: 8px; margin-top: 4px;">
                 <button type="submit" class="btn btn-primary btn-sm" style="height: 36px;">
                   Save Account Changes
                 </button>
-                <button type="button" class="btn btn-secondary btn-sm" id="btnCancelAccountModify" style="height: 36px;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btnCancelAccountModify"
+                  style="height: 36px;">
                   Cancel
                 </button>
               </div>
@@ -627,17 +685,18 @@
 
           <!-- Section 2: Customization (Collapsible Accordion) -->
           <div class="profile-section-block customization-section">
-            <button type="button" class="customization-accordion-toggle" id="customizationToggleBtn" aria-expanded="false" aria-controls="customizationOptionsContent">
+            <button type="button" class="customization-accordion-toggle" id="customizationToggleBtn"
+              aria-expanded="false" aria-controls="customizationOptionsContent">
               <div class="customization-toggle-left">
                 <span data-icon="palette"></span>
                 <span class="customization-toggle-title">Customization</span>
               </div>
               <span class="customization-toggle-chevron" id="customizationToggleChevron" data-icon="chevronDown"></span>
             </button>
-            
+
             <div class="customization-options-content" id="customizationOptionsContent" style="display: none;">
               <p class="profile-section-desc">Personalize the application color theme and mobile taskbar geometry.</p>
-              
+
               <div style="display: flex; flex-direction: column; gap: 10px;">
                 <span class="form-label">Application Color Theme</span>
                 <div class="swatch-group" id="taskbarColorSwatches">
@@ -683,14 +742,15 @@
                 <h2 class="profile-section-heading">
                   <span data-icon="heart"></span> Donate &amp; Support Future Development
                 </h2>
-                <p class="profile-section-desc">TaskCore is 100% ad-free forever. Donate to back independent development and unlock all premium features.</p>
+                <p class="profile-section-desc">TaskCore is 100% ad-free forever. Donate to back independent development
+                  and unlock all premium features.</p>
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <span class="donate-scroll-hint">Scroll sideways &rarr;</span>
                 <span class="badge badge-medium" id="activeDonationBadge" style="display: none;">Active Patron</span>
               </div>
             </div>
-            
+
             <div class="donation-grid">
               <!-- Plan 1: 1 Month (₹29) -->
               <div class="donate-card" id="donatePlan1m">
@@ -705,7 +765,8 @@
                   <li><span data-icon="check"></span> Private offline storage</li>
                   <li><span data-icon="check"></span> Community supporter status</li>
                 </ul>
-                <button type="button" class="btn btn-secondary btn-sm btn-donate-action" data-donate-plan="1m" style="margin-top: auto; width: 100%;">
+                <button type="button" class="btn btn-secondary btn-sm btn-donate-action" data-donate-plan="1m"
+                  style="margin-top: auto; width: 100%;">
                   <span>Donate ₹29</span>
                 </button>
               </div>
@@ -724,7 +785,8 @@
                   <li><span data-icon="check"></span> All themes &amp; color swatches</li>
                   <li><span data-icon="check"></span> Direct roadmap feedback</li>
                 </ul>
-                <button type="button" class="btn btn-primary btn-sm btn-donate-action" data-donate-plan="3m" style="margin-top: auto; width: 100%;">
+                <button type="button" class="btn btn-primary btn-sm btn-donate-action" data-donate-plan="3m"
+                  style="margin-top: auto; width: 100%;">
                   <span>Donate ₹89</span>
                 </button>
               </div>
@@ -742,7 +804,8 @@
                   <li><span data-icon="check"></span> Priority feature voting</li>
                   <li><span data-icon="check"></span> Future development patron</li>
                 </ul>
-                <button type="button" class="btn btn-secondary btn-sm btn-donate-action" data-donate-plan="6m" style="margin-top: auto; width: 100%;">
+                <button type="button" class="btn btn-secondary btn-sm btn-donate-action" data-donate-plan="6m"
+                  style="margin-top: auto; width: 100%;">
                   <span>Donate ₹159</span>
                 </button>
               </div>
@@ -751,7 +814,8 @@
               <div class="donate-card" id="donatePlan1y">
                 <div class="donate-header">
                   <span class="donate-name">1 Year</span>
-                  <span class="badge badge-low" style="font-size: 10px; background: rgba(142,166,107,0.2); color: #8ea66b;">Best Value</span>
+                  <span class="badge badge-low"
+                    style="font-size: 10px; background: rgba(142,166,107,0.2); color: #8ea66b;">Best Value</span>
                 </div>
                 <div class="donate-price">₹299 <span class="donate-period">/ 1 year</span></div>
                 <p class="donate-tagline">Annual patron (only ₹25/mo).</p>
@@ -761,7 +825,8 @@
                   <li><span data-icon="check"></span> Annual patron badge</li>
                   <li><span data-icon="check"></span> VIP support &amp; early updates</li>
                 </ul>
-                <button type="button" class="btn btn-primary btn-sm btn-donate-action" data-donate-plan="1y" style="margin-top: auto; width: 100%;">
+                <button type="button" class="btn btn-primary btn-sm btn-donate-action" data-donate-plan="1y"
+                  style="margin-top: auto; width: 100%;">
                   <span>Donate ₹299</span>
                 </button>
               </div>
@@ -769,7 +834,8 @@
 
             <!-- Free Option fallback -->
             <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-              <button type="button" class="btn btn-ghost btn-sm" id="btnSelectFreePlan" style="font-size: 12px; color: var(--text-muted);">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnSelectFreePlan"
+                style="font-size: 12px; color: var(--text-muted);">
                 Switch to Community Free Edition
               </button>
             </div>
@@ -802,7 +868,8 @@
                   <button type="button" class="btn btn-primary btn-sm" id="btnTimerToggle" style="flex: 1;">
                     <span data-icon="play"></span> Start
                   </button>
-                  <button type="button" class="btn btn-secondary btn-sm btn-icon-only" id="btnTimerReset" title="Reset Timer" aria-label="Reset Timer">
+                  <button type="button" class="btn btn-secondary btn-sm btn-icon-only" id="btnTimerReset"
+                    title="Reset Timer" aria-label="Reset Timer">
                     <span data-icon="rotateCcw"></span>
                   </button>
                 </div>
@@ -815,7 +882,8 @@
                     <span data-icon="star"></span>
                     <span class="widget-card-title">Daily Focus Mindset</span>
                   </div>
-                  <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="btnRefreshQuote" title="Next Mindset Thought" aria-label="Next Mindset Thought">
+                  <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="btnRefreshQuote"
+                    title="Next Mindset Thought" aria-label="Next Mindset Thought">
                     <span data-icon="repeat"></span>
                   </button>
                 </div>
@@ -836,7 +904,8 @@
                   </div>
                   <span class="scratchpad-status-indicator" id="scratchpadStatus">Auto-Saved</span>
                 </div>
-                <textarea class="widget-scratchpad-area" id="widgetScratchpadArea" placeholder="Jot down quick thoughts, temporary notes, or phone numbers without cluttering tasks..."></textarea>
+                <textarea class="widget-scratchpad-area" id="widgetScratchpadArea"
+                  placeholder="Jot down quick thoughts, temporary notes, or phone numbers without cluttering tasks..."></textarea>
               </div>
             </div>
           </div>
@@ -857,7 +926,8 @@
             <h2 class="profile-section-heading">
               <span data-icon="messageSquare"></span> Feedback &amp; Suggestions
             </h2>
-            <p class="profile-section-desc">Share feature requests, bug reports, or suggestions to guide upcoming releases.</p>
+            <p class="profile-section-desc">Share feature requests, bug reports, or suggestions to guide upcoming
+              releases.</p>
 
             <form class="feedback-card" id="feedbackForm">
               <div class="feedback-form-row">
@@ -884,7 +954,9 @@
 
               <div class="form-field" style="margin-top: 10px;">
                 <label class="form-label" for="feedbackMessageArea">Your Message &amp; Suggestions *</label>
-                <textarea class="form-textarea" id="feedbackMessageArea" rows="3" placeholder="Tell us what features or improvements you would like to see in future updates..." required style="resize: vertical; min-height: 70px;"></textarea>
+                <textarea class="form-textarea" id="feedbackMessageArea" rows="3"
+                  placeholder="Tell us what features or improvements you would like to see in future updates..."
+                  required style="resize: vertical; min-height: 70px;"></textarea>
               </div>
 
               <div class="feedback-submit-row">
@@ -897,7 +969,8 @@
 
             <!-- Feedback History Feed -->
             <div class="feedback-history-wrap" id="feedbackHistoryWrap" style="margin-top: 16px;">
-              <h3 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin: 0 0 10px 0;">Recent Submissions</h3>
+              <h3 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin: 0 0 10px 0;">Recent
+                Submissions</h3>
               <div class="feedback-history-list" id="feedbackHistoryList">
                 <!-- Rendered dynamically -->
               </div>
@@ -915,8 +988,10 @@
                 <span class="version-build">Build Release 2026.10.08 - Client Offline Edition</span>
               </div>
               <div style="display: flex; gap: 10px;">
-                <button type="button" class="btn btn-secondary btn-sm" data-view-target="privacy">Privacy Policy</button>
-                <button type="button" class="btn btn-secondary btn-sm" data-view-target="terms">Terms of Service</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-view-target="privacy">Privacy
+                  Policy</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-view-target="terms">Terms of
+                  Service</button>
               </div>
             </div>
           </div>
@@ -974,7 +1049,8 @@
           <div class="empty-state" id="habitsEmptyState" style="display: none;">
             <div class="empty-icon" data-icon="repeat"></div>
             <h2 class="empty-title">No habits created yet</h2>
-            <p class="empty-desc">Build momentum with small daily rituals. Create your first habit to start tracking streaks.</p>
+            <p class="empty-desc">Build momentum with small daily rituals. Create your first habit to start tracking
+              streaks.</p>
             <button type="button" class="btn btn-primary btn-sm" id="btnCreateFirstHabit" style="margin-top: 12px;">
               <span data-icon="plus"></span> Create Habit
             </button>
@@ -1032,7 +1108,8 @@
           <div class="empty-state" id="projectsEmptyState" style="display: none;">
             <div class="empty-icon" data-icon="briefcase"></div>
             <h2 class="empty-title">No projects created yet</h2>
-            <p class="empty-desc">Organize multiple related tasks toward a major milestone. Create your first project to track progress.</p>
+            <p class="empty-desc">Organize multiple related tasks toward a major milestone. Create your first project to
+              track progress.</p>
             <button type="button" class="btn btn-primary btn-sm" id="btnCreateFirstProject" style="margin-top: 12px;">
               <span data-icon="plus"></span> Create Project
             </button>
@@ -1043,7 +1120,8 @@
     </main>
 
     <!-- Mobile Bottom Navigation Bar (Taskbar) -->
-    <nav class="mobile-bottom-nav taskbar-color-rose taskbar-shape-box" id="mobileBottomNav" aria-label="Mobile Navigation">
+    <nav class="mobile-bottom-nav taskbar-color-rose taskbar-shape-box" id="mobileBottomNav"
+      aria-label="Mobile Navigation">
       <div class="mobile-bottom-nav-inner">
         <button type="button" class="mobile-nav-btn active" id="mobileNavTasks">
           <span data-icon="tasks"></span>
@@ -1073,7 +1151,8 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <h2 class="modal-title" id="modalTitleLabel">Edit Task</h2>
-        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="taskModalCloseBtn" aria-label="Close modal">
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="taskModalCloseBtn"
+          aria-label="Close modal">
           <span data-icon="close"></span>
         </button>
       </div>
@@ -1087,7 +1166,8 @@
 
           <div class="form-field">
             <label class="form-label" for="modalTaskDescription">Notes / Description</label>
-            <textarea class="form-textarea" id="modalTaskDescription" placeholder="Add optional details, specifications, or links..."></textarea>
+            <textarea class="form-textarea" id="modalTaskDescription"
+              placeholder="Add optional details, specifications, or links..."></textarea>
           </div>
 
           <div class="form-grid-2">
@@ -1126,7 +1206,8 @@
               <!-- Populated dynamically -->
             </div>
             <div class="subtask-add-row">
-              <input type="text" class="form-input" id="modalNewSubtaskInput" placeholder="Add checklist item..." autocomplete="off">
+              <input type="text" class="form-input" id="modalNewSubtaskInput" placeholder="Add checklist item..."
+                autocomplete="off">
               <button type="button" class="btn btn-secondary btn-sm" id="modalAddSubtaskBtn">Add</button>
             </div>
           </div>
@@ -1148,7 +1229,8 @@
     <div class="modal-dialog" style="max-width: 420px;">
       <div class="modal-header">
         <h2 class="modal-title" id="catModalLabel">Create Category</h2>
-        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="categoryModalCloseBtn" aria-label="Close modal">
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="categoryModalCloseBtn"
+          aria-label="Close modal">
           <span data-icon="close"></span>
         </button>
       </div>
@@ -1156,11 +1238,13 @@
         <div class="modal-body">
           <div class="form-field">
             <label class="form-label" for="categoryNameInput">Category Name</label>
-            <input type="text" class="form-input" id="categoryNameInput" placeholder="e.g. Finance, Health, Project X" required autocomplete="off">
+            <input type="text" class="form-input" id="categoryNameInput" placeholder="e.g. Finance, Health, Project X"
+              required autocomplete="off">
           </div>
           <div class="form-field">
             <label class="form-label" for="categoryColorInput">Category Color Tag</label>
-            <input type="color" class="form-input" id="categoryColorInput" value="#d8a2a2" style="padding: 4px; height: 42px; cursor: pointer;">
+            <input type="color" class="form-input" id="categoryColorInput" value="#d8a2a2"
+              style="padding: 4px; height: 42px; cursor: pointer;">
           </div>
         </div>
         <div class="modal-footer">
@@ -1175,7 +1259,8 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <h2 class="modal-title" id="habitModalTitleLabel">New Habit</h2>
-        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="habitModalCloseBtn" aria-label="Close modal">
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="habitModalCloseBtn"
+          aria-label="Close modal">
           <span data-icon="close"></span>
         </button>
       </div>
@@ -1184,7 +1269,8 @@
         <div class="modal-body">
           <div class="form-field">
             <label class="form-label" for="modalHabitTitle">Habit Name *</label>
-            <input type="text" class="form-input" id="modalHabitTitle" placeholder="e.g. Read 20 pages, Morning Run, Meditate" required autocomplete="off">
+            <input type="text" class="form-input" id="modalHabitTitle"
+              placeholder="e.g. Read 20 pages, Morning Run, Meditate" required autocomplete="off">
           </div>
           <div class="form-row">
             <div class="form-field">
@@ -1221,7 +1307,8 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <h2 class="modal-title" id="projectModalTitleLabel">New Project</h2>
-        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="projectModalCloseBtn" aria-label="Close modal">
+        <button type="button" class="btn btn-ghost btn-sm btn-icon-only" id="projectModalCloseBtn"
+          aria-label="Close modal">
           <span data-icon="close"></span>
         </button>
       </div>
@@ -1230,11 +1317,14 @@
         <div class="modal-body">
           <div class="form-field">
             <label class="form-label" for="modalProjectName">Project Name *</label>
-            <input type="text" class="form-input" id="modalProjectName" placeholder="e.g. Website Revamp, Q4 Launch, Studio Setup" required autocomplete="off">
+            <input type="text" class="form-input" id="modalProjectName"
+              placeholder="e.g. Website Revamp, Q4 Launch, Studio Setup" required autocomplete="off">
           </div>
           <div class="form-field">
             <label class="form-label" for="modalProjectDescription">Description / Objective</label>
-            <textarea class="form-textarea" id="modalProjectDescription" rows="2" placeholder="Key goals and deliverables for this project..." style="resize: vertical; min-height: 60px;"></textarea>
+            <textarea class="form-textarea" id="modalProjectDescription" rows="2"
+              placeholder="Key goals and deliverables for this project..."
+              style="resize: vertical; min-height: 60px;"></textarea>
           </div>
           <div class="form-row">
             <div class="form-field">
@@ -1276,7 +1366,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger btn-sm" id="modalProjectDeleteBtn" style="display: none; margin-right: auto;">
+          <button type="button" class="btn btn-danger btn-sm" id="modalProjectDeleteBtn"
+            style="display: none; margin-right: auto;">
             <span data-icon="trash"></span> Delete
           </button>
           <button type="button" class="btn btn-secondary btn-sm" id="projectModalCancelBtn">Cancel</button>
@@ -1292,4 +1383,5 @@
   <!-- Application Script Module -->
   <script type="module" src="scripts/app.js?v=12"></script>
 </body>
+
 </html>

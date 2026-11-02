@@ -421,6 +421,7 @@ a:hover {
   min-width: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  background-color: var(--bg-app);
 }
 
 /* Left Sidebar (Desktop) */
@@ -435,6 +436,53 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 40;
+}
+
+/* VS Code-style Curved Modular Layout for Desktop */
+@media (min-width: 769px) {
+  .app-container {
+    padding: 8px;
+    gap: 8px;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: var(--bg-app);
+  }
+
+  .sidebar {
+    height: 100%;
+    position: relative;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .sidebar-header {
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+  }
+
+  .sidebar-footer {
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+  }
+
+  .main-area {
+    height: 100%;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: var(--bg-app);
+    box-shadow: var(--shadow-xs);
+    padding-bottom: 24px;
+  }
+
+  .top-header {
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+  }
 }
 
 .sidebar-header {
